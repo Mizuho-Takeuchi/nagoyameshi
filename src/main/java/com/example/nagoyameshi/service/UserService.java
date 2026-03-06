@@ -2,9 +2,12 @@ package com.example.nagoyameshi.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import jakarta.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +79,20 @@ public class UserService {
 	public void enableUser(User user) {
 		user.setEnabled(true);
 		userRepository.save(user);
+	}
+	
+	//すべてのユーザーをページングされた状態で取得する。
+	public Page<User> findAllUsers(Pageable pageable){
+		return userRepository.findAll(pageable);
+	}
+	
+	//指定されたキーワードを氏名またはフリガナに含むユーザーを、ページングされた状態で取得する。
+	public Page<User> findUsersByNameLikeOrFuriganaLike(String nameKeyword, String FuriganaKeyword, Pageable pageable){
+		return userRepository.findByNameLikeOrFuriganaLike("%"+nameKeyword+"%", "%"+FuriganaKeyword+"%", pageable);
+	}
+	
+	//指定したidを持つユーザーを取得する。
+	public Optional<User> findUserById(Integer id) {
+		return userRepository.findById(id);
 	}
 }

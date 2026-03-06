@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <div th:replace="~{fragment :: meta}"></div>
+
+        <div th:replace="~{fragment :: styles}"></div>
+
+        <title>会員詳細</title>
+    </head>
+    <body>
+        <div class="nagoyameshi-wrapper">
+            <div th:replace="~{fragment :: header}"></div>
+
+            <main>
+                <div class="container py-4 nagoyameshi-container">
+                    <div class="row justify-content-center">
+                        <div th:replace="~{fragment :: sidebar}"></div>
+
+                        <div class="col container">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-7 col-lg-8 col-md-9">
+                                    <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                        <ol class="breadcrumb mb-0">
+                                            <li class="breadcrumb-item"><a th:href="@{/admin/users}">会員一覧</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">会員詳細</li>
+                                        </ol>
+                                    </nav>
+
+                                    <h1 class="mb-4 text-center" th:text="${user.name}"></h1>
+
+                                    <div class="container mb-4">
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-3">
+                                                <span class="fw-bold">ID</span>
+                                            </div>
+
+                                            <div class="col">
+                                                <span th:text="${user.id}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-3">
+                                                <span class="fw-bold">氏名</span>
+                                            </div>
+
+                                            <div class="col">
+                                                <span th:text="${user.name}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-3">
+                                                <span class="fw-bold">フリガナ</span>
+                                            </div>
+
+                                            <div class="col">
+                                                <span th:text="${user.furigana}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-3">
+                                                <span class="fw-bold">メールアドレス</span>
+                                            </div>
+
+                                            <div class="col">
+                                                <span th:text="${user.email}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-3">
+                                                <span class="fw-bold">郵便番号</span>
+                                            </div>
+
+                                            <div class="col">
+                                                <span th:text="${#strings.substring(user.postalCode, 0, 3) + '-' + #strings.substring(user.postalCode, 3)}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-3">
+                                                <span class="fw-bold">住所</span>
+                                            </div>
+
+                                            <div class="col">
+                                                <span th:text="${user.address}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-3">
+                                                <span class="fw-bold">電話番号</span>
+                                            </div>
+
+                                            <div class="col">
+                                                <span th:text="${user.phoneNumber}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-3">
+                                                <span class="fw-bold">誕生日</span>
+                                            </div>
+
+                                            <div class="col">
+                                                <span th:if="${user.birthday != null}" th:text="${#temporals.format(user.birthday, 'yyyy年M月d日')}"></span>
+                                                <span th:unless="${user.birthday != null}">未設定</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-3">
+                                                <span class="fw-bold">職業</span>
+                                            </div>
+
+                                            <div class="col">
+                                                <span th:if="${user.occupation != null}" th:text="${user.occupation}"></span>
+                                                <span th:unless="${user.occupation != null}">未設定</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pb-2 mb-2 border-bottom">
+                                            <div class="col-3">
+                                                <span class="fw-bold">会員種別</span>
+                                            </div>
+
+                                            <div class="col">
+                                                <span th:if="${'ROLE_FREE_MEMBER'.equals(user.role.name)}">無料会員</span>
+                                                <span th:if="${'ROLE_PAID_MEMBER'.equals(user.role.name)}">有料会員</span>
+                                                <span th:if="${'ROLE_ADMIN'.equals(user.role.name)}">管理者</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <div th:replace="~{fragment :: footer}"></div>
+        </div>
+
+        <div th:replace="~{fragment :: scripts}"></div>
+  </body>
+</html>
