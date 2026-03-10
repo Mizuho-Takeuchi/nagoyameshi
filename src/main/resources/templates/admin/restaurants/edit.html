@@ -158,6 +158,23 @@
                                             </div>
                                         </div>
 
+                                        <th:block th:each="i : ${#numbers.sequence(0, 2)}">
+                                            <div class="form-group row mb-3">
+                                                <label th:for="${'category' + (i + 1)}" class="col-md-5 col-form-label text-md-left fw-bold" th:text="${'カテゴリ' + (i + 1) + '（3つまで選択可）'}"></label>
+
+                                                <div class="col-md-7">
+                                                    <select class="form-control form-select" th:id="${'category' + (i + 1)}" name="categoryIds[]">
+                                                        <option value="">選択なし</option>
+                                                        <div th:each="category : ${categories}">
+                                                            <option th:value="${category.id}"
+                                                                    th:selected="${restaurantEditForm.categoryIds != null && i < restaurantEditForm.categoryIds.size() ? restaurantEditForm.categoryIds[i] == category.id : false}"
+                                                                    th:text="${category.name}"></option>
+                                                        </div>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </th:block>
+
                                         <hr class="my-4">
 
                                         <div class="form-group d-flex justify-content-center mb-4">

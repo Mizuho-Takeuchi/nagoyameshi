@@ -23,9 +23,12 @@ import com.example.nagoyameshi.repository.RestaurantRepository;
 @Service
 public class RestaurantService {
 	private final RestaurantRepository restaurantRepository;
+	private final CategoryRestaurantService categoryRestaurantService;
 	
-	public RestaurantService(RestaurantRepository restaurantRepository) {
+	public RestaurantService(RestaurantRepository restaurantRepository,
+							CategoryRestaurantService categoryRestaurantService) {
 		this.restaurantRepository = restaurantRepository;
+		this.categoryRestaurantService = categoryRestaurantService;
 	}
 	
 	public Page<Restaurant> findAllRestaurants(Pageable pageable){
@@ -72,8 +75,12 @@ public class RestaurantService {
 	    restaurant.setOpeningTime(restaurantRegisterForm.getOpeningTime());
 	    restaurant.setClosingTime(restaurantRegisterForm.getClosingTime());
 	    restaurant.setSeatingCapacity(restaurantRegisterForm.getSeatingCapacity());
-
+	    
 	    restaurantRepository.save(restaurant);
+	    
+	    if(restaurantRegisterForm.getCategoryIds() != null) {
+	    	categoryRestaurantService.createCategoriesRestaurants(restaurantRegisterForm.getCategoryIds(), restaurant);
+	    }
 	}
 	
 	@Transactional
@@ -99,6 +106,8 @@ public class RestaurantService {
 	    restaurant.setSeatingCapacity(restaurantEditForm.getSeatingCapacity());
 
 	    restaurantRepository.save(restaurant);
+	    
+	    categoryRestaurantService.syncCategoriesRestaurants(restaurantEditForm.getCategoryIds(), restaurant);
 	}
 	
 	@Transactional
