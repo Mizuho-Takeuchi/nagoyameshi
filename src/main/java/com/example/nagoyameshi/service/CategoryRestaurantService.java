@@ -38,7 +38,7 @@ public class CategoryRestaurantService {
 					Optional<CategoryRestaurant> optionalCategoryRestaurant = categoryRestaurantRepository.findByRestaurantAndCategory(restaurant, category);
 					
 					if(optionalCategoryRestaurant.isEmpty()) {
-						CategoryRestaurant categoryRestaurant = optionalCategoryRestaurant.get();
+						CategoryRestaurant categoryRestaurant = new CategoryRestaurant();
 						categoryRestaurant.setRestaurant(restaurant);	
 						categoryRestaurant.setCategory(category);
 						
