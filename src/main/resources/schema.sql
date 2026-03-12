@@ -62,3 +62,20 @@ CREATE TABLE IF NOT EXISTS category_restaurant (
     FOREIGN KEY (restaurant_id) REFERENCES restaurants (id),
     FOREIGN KEY (category_id) REFERENCES categories (id)
 );
+
+CREATE TABLE IF NOT EXISTS regular_holidays (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    day VARCHAR(50) NOT NULL,
+    day_index INT
+);
+
+CREATE TABLE IF NOT EXISTS regular_holiday_restaurant (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    restaurant_id INT NOT NULL,
+    regular_holiday_id INT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE (restaurant_id, regular_holiday_id),
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants (id),
+    FOREIGN KEY (regular_holiday_id) REFERENCES regular_holidays (id)
+);

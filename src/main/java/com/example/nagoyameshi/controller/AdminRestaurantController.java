@@ -26,6 +26,8 @@ import com.example.nagoyameshi.form.RestaurantEditForm;
 import com.example.nagoyameshi.form.RestaurantRegisterForm;
 import com.example.nagoyameshi.service.CategoryRestaurantService;
 import com.example.nagoyameshi.service.CategoryService;
+import com.example.nagoyameshi.service.RegularHolidayRestaurantService;
+import com.example.nagoyameshi.service.RegularHolidayService;
 import com.example.nagoyameshi.service.RestaurantService;
 
 @Controller
@@ -34,13 +36,19 @@ public class AdminRestaurantController {
 	private final RestaurantService restaurantService;
 	private final CategoryService categoryService;
 	private final CategoryRestaurantService categoryRestaurantService;
+	private final RegularHolidayService regularHolidayService;
+	private final RegularHolidayRestaurantService regularHolidayRestaurantService;
 	
 	public AdminRestaurantController(RestaurantService restaurantService,
 									CategoryService categoryService,
-									CategoryRestaurantService categoryRestaurantService) {
+									CategoryRestaurantService categoryRestaurantService,
+									RegularHolidayService regularHolidayService,
+									RegularHolidayRestaurantService regularHolidayRestaurantService) {
 		this.restaurantService = restaurantService;
 		this.categoryService = categoryService;
 		this.categoryRestaurantService = categoryRestaurantService;
+		this.regularHolidayService = regularHolidayService;
+		this.regularHolidayRestaurantService = regularHolidayRestaurantService;
 	}
 	
 	@GetMapping
@@ -79,6 +87,7 @@ public class AdminRestaurantController {
 	public String register(Model model) {
 		model.addAttribute("restaurantRegisterForm", new RestaurantRegisterForm());
 		model.addAttribute("categories", categoryService.findAllCategories());
+		model.addAttribute("regularHolidays", regularHolidayService.findAllRegularHolidays());
 		return "admin/restaurants/register";
 	}
 	
@@ -108,7 +117,8 @@ public class AdminRestaurantController {
 
         if (bindingResult.hasErrors()) {
            model.addAttribute("restaurantRegisterForm", restaurantRegisterForm);
-           model.addAttribute("categories", categoryService.findAllCategories());	
+           model.addAttribute("categories", categoryService.findAllCategories());
+           model.addAttribute("regularHolidays", regularHolidayService.findAllRegularHolidays());
            return "admin/restaurants/register";
 	    }
         
@@ -131,6 +141,7 @@ public class AdminRestaurantController {
 		
 		Restaurant restaurant = optionalRestaurant.get();
 		List<Integer> categoryIds = categoryRestaurantService.findCategoryIdsByRestaurantOrderByIdAsc(restaurant);
+		List<Integer> currentRegularHolidays = regularHolidayRestaurantService.findRegularHolidayIdsByRestaurant(restaurant);
 		
 		RestaurantEditForm restaurantEditForm = new RestaurantEditForm(restaurant.getName(),
 														                null,
@@ -142,11 +153,14 @@ public class AdminRestaurantController {
 														                restaurant.getOpeningTime(),
 														                restaurant.getClosingTime(),
 														                restaurant.getSeatingCapacity(),
-														                categoryIds);
+														                categoryIds,
+														                currentRegularHolidays);
+																		//↑仮
 		
 		model.addAttribute("restaurant", restaurant);
 		model.addAttribute("restaurantEditForm", restaurantEditForm);
 		model.addAttribute("categories", categoryService.findAllCategories());
+		model.addAttribute("regularHolidays", regularHolidayService.findAllRegularHolidays());
 		return "admin/restaurants/edit";
 	}
 	
@@ -186,7 +200,7 @@ public class AdminRestaurantController {
            model.addAttribute("restaurant", restaurant);
            model.addAttribute("restaurantRegisterForm", restaurantEditForm);
            model.addAttribute("categories", categoryService.findAllCategories());
-
+           model.addAttribute("regularHolidays", regularHolidayService.findAllRegularHolidays());
            return "admin/restaurants/edit";
 	    }
         

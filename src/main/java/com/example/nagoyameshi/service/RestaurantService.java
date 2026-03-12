@@ -22,14 +22,18 @@ import com.example.nagoyameshi.repository.RestaurantRepository;
 
 @Service
 public class RestaurantService {
+
 	private final RestaurantRepository restaurantRepository;
-	private final CategoryRestaurantService categoryRestaurantService;
+    private final CategoryRestaurantService categoryRestaurantService;
+    private final RegularHolidayRestaurantService regularHolidayRestaurantService;
 	
 	public RestaurantService(RestaurantRepository restaurantRepository,
-							CategoryRestaurantService categoryRestaurantService) {
+							CategoryRestaurantService categoryRestaurantService,
+							RegularHolidayRestaurantService regularHolidayRestaurantService) {
 		this.restaurantRepository = restaurantRepository;
-		this.categoryRestaurantService = categoryRestaurantService;
-	}
+        this.categoryRestaurantService = categoryRestaurantService;
+        this.regularHolidayRestaurantService = regularHolidayRestaurantService;
+    }
 	
 	public Page<Restaurant> findAllRestaurants(Pageable pageable){
 		return restaurantRepository.findAll(pageable);
@@ -81,6 +85,10 @@ public class RestaurantService {
 	    if(restaurantRegisterForm.getCategoryIds() != null) {
 	    	categoryRestaurantService.createCategoriesRestaurants(restaurantRegisterForm.getCategoryIds(), restaurant);
 	    }
+	    
+	    if(restaurantRegisterForm.getRegularHolidayIds() != null) {
+	    	regularHolidayRestaurantService.createRegularHolidaysRestaurants(restaurantRegisterForm.getRegularHolidayIds(), restaurant);
+	    }
 	}
 	
 	@Transactional
@@ -108,6 +116,7 @@ public class RestaurantService {
 	    restaurantRepository.save(restaurant);
 	    
 	    categoryRestaurantService.syncCategoriesRestaurants(restaurantEditForm.getCategoryIds(), restaurant);
+	    regularHolidayRestaurantService.syncRegularHolidaysRestaurants(restaurantEditForm.getRegularHolidayIds(), restaurant);
 	}
 	
 	@Transactional
