@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <div th:replace="~{fragment :: meta}"></div>
+
+        <div th:replace="~{fragment :: styles}"></div>
+
+        <title>利用規約編集</title>
+    </head>
+    <body>
+        <div class="nagoyameshi-wrapper">
+            <div th:replace="~{fragment :: header}"></div>
+
+            <main>
+                <div class="container py-4 nagoyameshi-container">
+                    <div class="row justify-content-center">
+                        <div th:replace="~{fragment :: sidebar}"></div>
+
+                        <div class="col container">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-7 col-lg-8 col-md-9">
+                                    <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                        <ol class="breadcrumb mb-0">
+                                            <li class="breadcrumb-item"><a th:href="@{/admin/terms}">利用規約</a></li>
+                                            <li class="breadcrumb-item active" aria-current="page">利用規約編集</li>
+                                        </ol>
+                                    </nav>
+
+                                    <h1 class="mb-4 text-center">利用規約編集</h1>
+
+                                    <hr class="mb-4">
+
+                                    <form method="post" th:action="@{/admin/terms/update}" th:object="${termEditForm}">
+                                        <div class="form-group mb-3">
+                                            <div th:if="${#fields.hasErrors('content')}" class="text-danger small mb-2" th:errors="*{content}"></div>
+                                            <textarea class="form-control" th:field="*{content}" cols="30" rows="24"></textarea>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <div class="form-group d-flex justify-content-center mb-4">
+                                            <button type="submit" class="btn text-white shadow-sm w-50 nagoyameshi-btn">更新</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <div th:replace="~{fragment :: footer}"></div>
+        </div>
+
+        <div th:replace="~{fragment :: scripts}"></div>
+    </body>
+</html>
