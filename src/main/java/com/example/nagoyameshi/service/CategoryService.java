@@ -63,4 +63,8 @@ public class CategoryService {
 	public List<Category> findAllCategories(){
 		return categoryRepository.findAll();
 	}
+	
+	public Category findFirstCategoryByName(String name) {
+		return categoryRepository.findFirstByName(name);
+	}
 }
