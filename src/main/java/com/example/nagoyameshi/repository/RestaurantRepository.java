@@ -9,4 +9,5 @@ import com.example.nagoyameshi.entity.Restaurant;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
 	public Page<Restaurant> findByNameLike(String keyword, Pageable pageable);
 	public Restaurant findFirstByOrderByIdDesc();
+	public Page<Restaurant> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

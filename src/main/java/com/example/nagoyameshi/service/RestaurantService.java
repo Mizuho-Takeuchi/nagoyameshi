@@ -153,4 +153,8 @@ public class RestaurantService {
 	public boolean isValidBusinessHours(LocalTime openingTime, LocalTime closingTime) {
 	    return closingTime.isAfter(openingTime);
 	}
+	
+	public Page<Restaurant> findAllRestaurantsByOrderByCreatedAtDesc(Pageable pageable){
+		return restaurantRepository.findAllByOrderByCreatedAtDesc(pageable);
+	}
 }
