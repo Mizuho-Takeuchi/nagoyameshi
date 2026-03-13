@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <div th:replace="~{fragment :: meta}"></div>
+
+        <div th:replace="~{fragment :: styles}"></div>
+
+        <title>利用規約</title>
+    </head>
+    <body>
+        <div class="nagoyameshi-wrapper">
+            <div th:replace="~{fragment :: header}"></div>
+
+            <main>
+                <div class="container py-4 nagoyameshi-container">
+                    <div class="row justify-content-center">
+                        <div th:replace="~{fragment :: sidebar}"></div>
+
+                        <div class="col container">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-7 col-lg-8 col-md-9">
+
+                                    <h1 class="mb-4 text-center">利用規約</h1>
+
+                                    <div class="d-flex justify-content-end align-items-end mb-3">
+                                        <div>
+                                            <a th:href="@{/admin/terms/edit}" class="me-2">編集</a>
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${successMessage}" class="alert alert-info">
+                                        <span th:text="${successMessage}"></span>
+                                    </div>
+
+                                    <div class="container mb-4 nagoyameshi-terms">
+                                        <span th:utext="${term.content}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <div th:replace="~{fragment :: footer}"></div>
+        </div>
+
+        <div th:replace="~{fragment :: scripts}"></div>
+    </body>
+</html>
