@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.example.nagoyameshi.entity.Role;
 import com.example.nagoyameshi.entity.User;
 import com.example.nagoyameshi.form.SignupForm;
+import com.example.nagoyameshi.form.UserEditForm;
 import com.example.nagoyameshi.repository.RoleRepository;
 import com.example.nagoyameshi.repository.UserRepository;
 
@@ -94,5 +95,41 @@ public class UserService {
 	//指定したidを持つユーザーを取得する。
 	public Optional<User> findUserById(Integer id) {
 		return userRepository.findById(id);
+	}
+	
+	//フォームから送信された会員情報でデータベースを更新する。
+    @Transactional
+    public void updateUser(UserEditForm userEditForm, User user) {
+        user.setName(userEditForm.getName());
+        user.setFurigana(userEditForm.getFurigana());
+        user.setPostalCode(userEditForm.getPostalCode());
+        user.setAddress(userEditForm.getAddress());
+        user.setPhoneNumber(userEditForm.getPhoneNumber());
+
+        if (!userEditForm.getBirthday().isEmpty()) {
+            user.setBirthday(LocalDate.parse(userEditForm.getBirthday(), DateTimeFormatter.ofPattern("yyyyMMdd")));
+        } else {
+            user.setBirthday(null);
+        }
+
+        if (!userEditForm.getOccupation().isEmpty()) {
+            user.setOccupation(userEditForm.getOccupation());
+        } else {
+            user.setOccupation(null);
+        }
+
+        user.setEmail(userEditForm.getEmail());
+
+        userRepository.save(user);
+    }  
+	
+	//メールアドレスが変更されたかどうかをチェックする。
+	public boolean isEmailChanged(UserEditForm userEditForm, User user) {
+        return !userEditForm.getEmail().equals(user.getEmail());
+    }
+	
+	//指定したメールアドレスを持つユーザーを取得する。
+	public User findUserByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 }
