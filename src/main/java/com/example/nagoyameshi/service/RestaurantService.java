@@ -157,4 +157,39 @@ public class RestaurantService {
 	public Page<Restaurant> findAllRestaurantsByOrderByCreatedAtDesc(Pageable pageable){
 		return restaurantRepository.findAllByOrderByCreatedAtDesc(pageable);
 	}
+	
+	// すべての店舗を最低価格が安い順に並べ替え、ページングされた状態で取得する
+    public Page<Restaurant> findAllRestaurantsByOrderByLowestPriceAsc(Pageable pageable) {
+        return restaurantRepository.findAllByOrderByLowestPriceAsc(pageable);
+    }
+
+    // 指定されたキーワードを店舗名または住所またはカテゴリ名に含む店舗を作成日時が新しい順に並べ替え、ページングされた状態で取得する
+    public Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(Pageable pageable,String nameKeyword, String addressKeyword, String categoryNameKeyword) {
+        return restaurantRepository.findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(pageable,nameKeyword, addressKeyword, categoryNameKeyword);
+    }
+
+    // 指定されたキーワードを店舗名または住所またはカテゴリ名に含む店舗を最低価格が安い順に並べ替え、ページングされた状態で取得する
+    public Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(Pageable pageable,String nameKeyword, String addressKeyword, String categoryNameKeyword) {
+        return restaurantRepository.findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(pageable,nameKeyword, addressKeyword, categoryNameKeyword);
+    }
+
+    // 指定されたidのカテゴリが設定された店舗を作成日時が新しい順に並べ替え、ページングされた状態で取得する
+    public Page<Restaurant> findRestaurantsByCategoryIdOrderByCreatedAtDesc(Pageable pageable,Integer categoryId) {
+        return restaurantRepository.findByCategoryIdOrderByCreatedAtDesc(pageable,categoryId);
+    }
+
+    // 指定されたidのカテゴリが設定された店舗を最低価格が安い順に並べ替え、ページングされた状態で取得する
+    public Page<Restaurant> findRestaurantsByCategoryIdOrderByLowestPriceAsc(Pageable pageable,Integer categoryId) {
+        return restaurantRepository.findByCategoryIdOrderByLowestPriceAsc(pageable,categoryId);
+    }
+
+    // 指定された最低価格以下の店舗を作成日時が新しい順に並べ替え、ページングされた状態で取得する
+    public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByCreatedAtDesc(Pageable pageable,Integer price) {
+        return restaurantRepository.findByLowestPriceLessThanEqualOrderByCreatedAtDesc(pageable,price);
+    }
+
+    // 指定された最低価格以下の店舗を最低価格が安い順に並べ替え、ページングされた状態で取得する
+    public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(Pageable pageable,Integer price) {
+        return restaurantRepository.findByLowestPriceLessThanEqualOrderByLowestPriceAsc(pageable,price);
+    }   
 }

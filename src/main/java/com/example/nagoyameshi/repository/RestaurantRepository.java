@@ -3,6 +3,8 @@ package com.example.nagoyameshi.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.example.nagoyameshi.entity.Restaurant;
 
@@ -10,4 +12,45 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 	public Page<Restaurant> findByNameLike(String keyword, Pageable pageable);
 	public Restaurant findFirstByOrderByIdDesc();
 	public Page<Restaurant> findAllByOrderByCreatedAtDesc(Pageable pageable);
+	public Page<Restaurant> findAllByOrderByLowestPriceAsc(Pageable pageable);
+	@Query("SELECT DISTINCT r "
+			+ "FROM Restaurant r "
+			+ "LEFT JOIN r.categoriesRestaurants cr  "
+			+ "WHERE r.name LIKE CONCAT('%',:name,'%') "
+			+ "OR r.address LIKE CONCAT('%', :address,'%') "
+			+ "OR cr.category.name LIKE CONCAT ('%', :categoryName, '%') "
+			+ "ORDER BY r.createdAt DESC")
+	public Page<Restaurant> findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(Pageable pageable, 
+																							@Param("name")String name,
+																							@Param("address")String address,
+																							@Param("categoryName")String categoryName);
+	
+	@Query("SELECT DISTINCT r "
+			+ "FROM Restaurant r "
+			+ "LEFT JOIN r.categoriesRestaurants cr  "
+			+ "WHERE r.name LIKE CONCAT('%',:name,'%') "
+			+ "OR r.address LIKE CONCAT('%', :address,'%') "
+			+ "OR cr.category.name LIKE CONCAT ('%', :categoryName, '%') "
+			+ "ORDER BY r.lowestPrice DESC")
+	public Page<Restaurant> findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(Pageable pageable,
+																							@Param("name")String name,
+																							@Param("address")String address,
+																							@Param("categoryName")String categoryName);	
+	
+	@Query("SELECT DISTINCT r "
+			+ "FROM Restaurant r "
+			+ "INNER JOIN r.categoriesRestaurants cr "
+			+ "WHERE cr.category.id = :id "
+			+ "ORDER BY r.createdAt DESC")
+	public Page<Restaurant> findByCategoryIdOrderByCreatedAtDesc(Pageable pageable, @Param("id")Integer id);
+
+	@Query("SELECT DISTINCT r "
+			+ "FROM Restaurant r "
+			+ "INNER JOIN r.categoriesRestaurants cr "
+			+ "WHERE cr.category.id = :id "
+			+ "ORDER BY r.lowestPrice DESC")
+	public Page<Restaurant> findByCategoryIdOrderByLowestPriceAsc(Pageable pageable, @Param("id")Integer id);
+	
+	public Page<Restaurant> findByLowestPriceLessThanEqualOrderByCreatedAtDesc(Pageable pageable, Integer price);
+	public Page<Restaurant> findByLowestPriceLessThanEqualOrderByLowestPriceAsc(Pageable pageable, Integer price);
 }
