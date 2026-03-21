@@ -2,12 +2,18 @@ package com.example.nagoyameshi.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import jakarta.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -132,4 +138,31 @@ public class UserService {
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
+	
+	@Transactional
+	public void saveStripeCustomerId(User user, String custormerId) {
+		user.setStripeCustomerId(custormerId);
+		userRepository.save(user);
+	}
+	
+	@Transactional
+	public void updateRole(User user, String roleName) {
+		Role role = roleRepository.findByName(roleName);
+		user.setRole(role);
+		userRepository.save(user);
+	}
+	
+	// 認証情報のロールを更新する
+    public void refreshAuthenticationByRole(String newRole) {
+        // 現在の認証情報を取得する
+        Authentication currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // 新しい認証情報を作成する
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(new SimpleGrantedAuthority(newRole));
+        Authentication newAuthentication = new UsernamePasswordAuthenticationToken(currentAuthentication.getPrincipal(), currentAuthentication.getCredentials(), simpleGrantedAuthorities);
+
+        // 認証情報を更新する
+        SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+    }
 }
