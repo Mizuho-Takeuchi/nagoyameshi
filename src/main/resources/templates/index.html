@@ -91,6 +91,12 @@
                                             </th:block>
                                             <span th:if="${highlyRatedRestaurant.categoriesRestaurants.isEmpty()}">カテゴリ未設定</span>
                                         </div>
+                                        <p class="card-text">
+                                            <th:block th:with="roundedScore=${T(java.lang.Math).round(highlyRatedRestaurant.getAverageScore() * 2.0)}">
+                                                <span class="nagoyameshi-star-rating me-1" th:data-rate="${#numbers.formatDecimal(roundedScore / 2.0, 1, 'COMMA', 1, 'POINT')}"></span>
+                                            </th:block>
+                                            <span th:text="${#numbers.formatDecimal(highlyRatedRestaurant.getAverageScore(), 1, 'COMMA', 2, 'POINT')}"></span>
+                                        </p>
                                     </div>
                                 </div>
                             </a>

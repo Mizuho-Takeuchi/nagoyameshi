@@ -76,6 +76,10 @@
                         </div>
 
                         <div class="col">
+                            <div th:if="${errorMessage}" class="alert alert-danger">
+                                <span th:text="${errorMessage}"></span>
+                            </div>
+
                             <div class="d-flex justify-content-between flex-wrap">
                                 <p class="fs-5 mb-3">
                                     <span th:text="${#numbers.formatInteger(restaurantPage.getTotalElements(), 1, 'COMMA') + '件の店舗が見つかりました'}"></span>
@@ -90,6 +94,7 @@
                                     <select class="form-select form-select-sm" name="order" onChange="this.form.submit();">
                                         <option value="createdAtDesc" th:selected="${order == 'createdAtDesc' || order == null}">掲載日が新しい順</option>
                                         <option value="lowestPriceAsc" th:selected="${order == 'lowestPriceAsc'}">価格が安い順</option>
+                                        <option value="ratingDesc" th:selected="${order == 'ratingDesc'}">評価が高い順</option>
                                     </select>
                                 </form>
                             </div>
@@ -116,6 +121,12 @@
                                                         <span th:if="${restaurant.categoriesRestaurants.isEmpty()}">カテゴリ未設定</span>
                                                     </div>
                                                     <hr class="my-2">
+                                                    <p class="mb-1">
+                                                        <th:block th:with="roundedScore=${T(java.lang.Math).round(restaurant.getAverageScore() * 2.0)}">
+                                                            <span class="nagoyameshi-star-rating me-1" th:data-rate="${#numbers.formatDecimal(roundedScore / 2.0, 1, 'COMMA', 1, 'POINT')}"></span>
+                                                        </th:block>
+                                                        <span th:text="${#numbers.formatDecimal(restaurant.getAverageScore(), 1, 'COMMA', 2, 'POINT')}"></span><span th:text="${'（' + restaurant.reviews.size() + '件）'}"></span>
+                                                    </p>
                                                     <div class="mb-1">
                                                         <span th:text="${#numbers.formatInteger(restaurant.lowestPrice, 1, 'COMMA') + '円～' + #numbers.formatInteger(restaurant.highestPrice, 1, 'COMMA') + '円'}"></span>
                                                     </div>
