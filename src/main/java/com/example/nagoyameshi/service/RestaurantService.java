@@ -68,7 +68,7 @@ public class RestaurantService {
 			String hashedImageName = generateNewFileName(imageName);
 			Path filePath = Paths.get("src/main/resources/static/storage/" + hashedImageName);
 			copyImageFile(imageFile,filePath);
-			restaurant.setImage(imageName);
+			restaurant.setImage(hashedImageName);
 		}
 		
 		restaurant.setDescription(restaurantRegisterForm.getDescription());
@@ -191,5 +191,25 @@ public class RestaurantService {
     // 指定された最低価格以下の店舗を最低価格が安い順に並べ替え、ページングされた状態で取得する
     public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(Pageable pageable,Integer price) {
         return restaurantRepository.findByLowestPriceLessThanEqualOrderByLowestPriceAsc(pageable,price);
-    }   
+    }
+    
+    //すべての店舗を平均評価が高い順に並べ替え、ページングされた状態で取得する。
+    public Page<Restaurant> findAllRestaurantsByOrderByAverageScoreDesc(Pageable pageable){
+    	return restaurantRepository.findAllByOrderByAverageScoreDesc(pageable);
+    }
+    
+    //指定されたキーワードを店舗名または住所またはカテゴリ名に含む店舗を平均評価が高い順に並べ替え、ページングされた状態で取得する。
+    public Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(Pageable pageable, String nameKeyword, String addressKeyword, String categoryNameKeyword){
+    	return restaurantRepository.findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(pageable, nameKeyword, addressKeyword, categoryNameKeyword);
+    }
+    
+    //指定されたidのカテゴリが設定された店舗を平均評価が高い順に並べ替え、ページングされた状態で取得する。
+    public Page<Restaurant> findRestaurantsByCategoryIdOrderByAverageScoreDesc(Pageable pageable, Integer id){
+    	return restaurantRepository.findByCategoryIdOrderByAverageScoreDesc(pageable, id);
+    }
+    
+    //指定された最低価格以下の店舗を平均評価が高い順に並べ替え、ページングされた状態で取得する。
+    public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByAverageScoreDesc(Pageable pageable, Integer price){
+    	return restaurantRepository.findByLowestPriceLessThanEqualOrderByAverageScoreDesc(pageable, price);
+    }
 }

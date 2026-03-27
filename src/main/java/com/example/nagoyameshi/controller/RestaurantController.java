@@ -43,25 +43,33 @@ public class RestaurantController {
 		
 		if(keyword != null && !keyword.isEmpty()) {
 			if(order != null && order.equals("lowestPriceAsc")) {
-				restaurantPage = restaurantService.findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(pageable, "%"+keyword+"%","%"+keyword+"%","%"+keyword+"%");
+				restaurantPage = restaurantService.findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByCreatedAtDesc(pageable, keyword, keyword, keyword);
+			}else if(order != null && order.equals("ratingDesc")){
+				restaurantPage = restaurantService.findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(pageable, keyword, keyword, keyword);
 			}else {
-				restaurantPage = restaurantService.findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(pageable, "%"+keyword+"%","%"+keyword+"%","%"+keyword+"%");
+				restaurantPage = restaurantService.findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByLowestPriceAsc(pageable, keyword, keyword, keyword);
 			}
 		}else if(categoryId != null) {
 			if(order != null && order.equals("lowestPriceAsc")) {
 				restaurantPage = restaurantService.findRestaurantsByCategoryIdOrderByCreatedAtDesc(pageable, categoryId);
+			}else if(order != null && order.equals("ratingDesc")){
+				restaurantPage = restaurantService.findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(pageable, keyword, keyword, keyword);
 			}else {
 				restaurantPage = restaurantService.findRestaurantsByCategoryIdOrderByLowestPriceAsc(pageable, categoryId);
 			}
 		}else if(price != null) {
 			if(order != null && order.equals("lowestPriceAsc")) {
 				restaurantPage = restaurantService.findRestaurantsByLowestPriceLessThanEqualOrderByCreatedAtDesc(pageable, price);
+			}else if(order != null && order.equals("ratingDesc")){
+				restaurantPage = restaurantService.findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(pageable, keyword, keyword, keyword);
 			}else {
 				restaurantPage = restaurantService.findRestaurantsByLowestPriceLessThanEqualOrderByLowestPriceAsc(pageable, price);
 			}
 		}else {
 			if(order != null && order.equals("lowestPriceAsc")) {
 				restaurantPage = restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(pageable);
+			}else if(order != null && order.equals("ratingDesc")){
+				restaurantPage = restaurantService.findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(pageable, keyword, keyword, keyword);
 			}else {
 				restaurantPage = restaurantService.findAllRestaurantsByOrderByLowestPriceAsc(pageable);
 			}

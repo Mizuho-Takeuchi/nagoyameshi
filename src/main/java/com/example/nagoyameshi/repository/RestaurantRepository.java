@@ -50,7 +50,39 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 			+ "WHERE cr.category.id = :id "
 			+ "ORDER BY r.lowestPrice DESC")
 	public Page<Restaurant> findByCategoryIdOrderByLowestPriceAsc(Pageable pageable, @Param("id")Integer id);
-	
 	public Page<Restaurant> findByLowestPriceLessThanEqualOrderByCreatedAtDesc(Pageable pageable, Integer price);
 	public Page<Restaurant> findByLowestPriceLessThanEqualOrderByLowestPriceAsc(Pageable pageable, Integer price);
+	
+	@Query("SELECT r FROM Restaurant r "
+			+ "LEFT OUTER JOIN r.reviews v "
+			+ "GROUP BY r.id "
+			+ "ORDER BY AVG(v.score) DESC")
+	public Page<Restaurant> findAllByOrderByAverageScoreDesc(Pageable pageable);
+	
+	@Query("SELECT r FROM Restaurant r "
+			+ "INNER JOIN r.categoriesRestaurants cr "
+			+ "LEFT OUTER JOIN r.reviews v "
+			+ "WHERE r.name LIKE CONCAT('%',:name,'%') "
+			+ "OR r.address LIKE CONCAT('%', :address,'%') "
+			+ "OR cr.category.name LIKE CONCAT ('%', :categoryName, '%') "
+			+ "GROUP BY r.id "
+			+ "ORDER BY AVG(v.score) DESC")
+	public Page<Restaurant> findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByAverageScoreDesc(Pageable pageable,
+																								@Param("name") String name,
+																								@Param("address")String address,
+																								@Param("categoryName")String categoryName);
+	@Query("SELECT r FROM Restaurant r "
+			+ "INNER JOIN r.categoriesRestaurants cr "
+			+ "LEFT OUTER JOIN r.reviews v "
+			+ "WHERE cr.category.id = :id "
+			+ "GROUP BY r.id "
+			+ "ORDER BY AVG(v.score) DESC")
+	public Page<Restaurant> findByCategoryIdOrderByAverageScoreDesc(Pageable pageable, @Param("id") Integer id);
+	
+	@Query("SELECT r FROM Restaurant r "
+			+ "LEFT OUTER JOIN r.reviews v "
+			+ "WHERE r.lowestPrice <= :price "
+			+ "GROUP BY r.id "
+			+ "ORDER BY AVG(v.score) DESC")
+	public Page<Restaurant> findByLowestPriceLessThanEqualOrderByAverageScoreDesc(Pageable pageable, @Param("price")Integer price);
 }

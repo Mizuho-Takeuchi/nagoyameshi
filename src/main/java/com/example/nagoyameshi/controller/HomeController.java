@@ -29,7 +29,7 @@ public class HomeController {
 	public String index(Model model,
 						Pageable pageable) {
 		
-		Page<Restaurant> highlyRatedRestaurants = restaurantService.findAllRestaurants(PageRequest.of(0, 6));
+		Page<Restaurant> highlyRatedRestaurants = restaurantService.findAllRestaurantsByOrderByAverageScoreDesc(PageRequest.of(0, 6));
 
 		Page<Restaurant> newRestaurants = restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(PageRequest.of(0, 6));
 		
