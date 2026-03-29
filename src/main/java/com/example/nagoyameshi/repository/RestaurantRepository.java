@@ -1,5 +1,7 @@
 package com.example.nagoyameshi.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -85,4 +87,44 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 			+ "GROUP BY r.id "
 			+ "ORDER BY AVG(v.score) DESC")
 	public Page<Restaurant> findByLowestPriceLessThanEqualOrderByAverageScoreDesc(Pageable pageable, @Param("price")Integer price);
+	
+	@Query("SELECT r FROM Restaurant r "
+			+ "LEFT OUTER JOIN r.reservations rs "
+			+ "GROUP BY r.id "
+			+ "ORDER BY COUNT(rs) DESC")
+	public Page<Restaurant> findAllByOrderByReservationCountDesc(Pageable pageable);
+	
+	@Query("SELECT r FROM Restaurant r "
+			+ "LEFT JOIN r.categoriesRestaurants cr "
+			+ "LEFT OUTER JOIN r.reservations rs "
+			+ "WHERE r.name LIKE CONCAT('%', :name, '%') "
+			+ "OR r.address LIKE CONCAT('%', :address,'%') "
+			+ "OR cr.category.name LIKE CONCAT ('%', :categoryName, '%') "
+			+ "GROUP BY r.id "
+			+ "ORDER BY COUNT (DISTINCT rs.id) DESC")
+	public Page<Restaurant> findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByReservationCountDesc(Pageable pageable,
+																									@Param("name") String name,
+																									@Param("address") String address,
+																									@Param("categoryName") String categoryName);
+	
+	@Query("SELECT r FROM Restaurant r "
+			+ "INNER JOIN r.categoriesRestaurants cr "
+			+ "LEFT OUTER JOIN r.reservations rs "
+			+ "WHERE cr.category = :id "
+			+ "GROUP BY r.id "
+			+ "ORDER BY COUNT(rs) DESC")
+	public Page<Restaurant> findByCategoryIdOrderByReservationCountDesc(Pageable pageable, @Param("id") Integer id);
+	
+	@Query("SELECT r FROM Restaurant r "
+			+ "LEFT OUTER JOIN r.reservations rs "
+			+ "WHERE r.lowestPrice <= :price "
+			+ "GROUP BY r.id "
+			+ "ORDER BY COUNT(rs) DESC")
+	public Page<Restaurant> findByLowestPriceLessThanEqualOrderByReservationCountDesc(Pageable pageable, @Param("price") Integer price);
+	
+	@Query("SELECT rh.dayIndex FROM RegularHoliday rh "
+			+ "INNER JOIN rh.regularHolidaysRestaurants rhr "
+			+ "INNER JOIN rhr.restaurant r "
+			+ "WHERE r.id = :id")
+	public List<Integer> findDayIndexesByRestaurantId(@Param("id")Integer id);
 }
