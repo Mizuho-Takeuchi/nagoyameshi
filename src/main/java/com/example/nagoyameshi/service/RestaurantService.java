@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -211,5 +212,32 @@ public class RestaurantService {
     //指定された最低価格以下の店舗を平均評価が高い順に並べ替え、ページングされた状態で取得する。
     public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByAverageScoreDesc(Pageable pageable, Integer price){
     	return restaurantRepository.findByLowestPriceLessThanEqualOrderByAverageScoreDesc(pageable, price);
+    }
+    
+    //すべての店舗を予約数が多い順に並べ替え、ページングされた状態で取得する。
+    public Page<Restaurant> findAllRestaurantsByOrderByReservationCountDesc(Pageable pageable){
+    	return restaurantRepository.findAllByOrderByReservationCountDesc(pageable);
+    }
+    
+    //指定されたキーワードを店舗名または住所またはカテゴリ名に含む店舗を予約数が多い順に並べ替え、
+    //ページングされた状態で取得する。
+    public Page<Restaurant> findRestaurantsByNameLikeOrAddressLikeOrCategoryNameLikeOrderByReservationCountDesc(Pageable pageable,String nameKeyword, String addressKeyword, String categoryNameKeyword){
+    	return restaurantRepository.findByNameLikeOrAddressLikeOrCategoryNameLikeOrderByReservationCountDesc(pageable, nameKeyword, addressKeyword, categoryNameKeyword);
+    }
+    
+    //指定されたidのカテゴリが設定された店舗を予約数が多い順に並べ替え、
+    //ページングされた状態で取得する。
+    public Page<Restaurant> findRestaurantsByCategoryIdOrderByReservationCountDesc(Pageable pageable, Integer id){
+    	return restaurantRepository.findByCategoryIdOrderByReservationCountDesc(pageable, id);
+    }
+    
+    //指定された最低価格以下の店舗を予約数が多い順に並べ替え、ページングされた状態で取得する。
+    public Page<Restaurant> findRestaurantsByLowestPriceLessThanEqualOrderByReservationCountDesc(Pageable pageable, Integer price){
+    	return restaurantRepository.findByLowestPriceLessThanEqualOrderByReservationCountDesc(pageable, price);
+    }
+    
+    //指定された店舗の定休日のday_indexフィールドの値をリストで取得する。
+    public List<Integer> findDayIndexesByRestaurantId(Integer id){
+    	return restaurantRepository.findDayIndexesByRestaurantId(id);
     }
 }
