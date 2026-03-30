@@ -165,4 +165,8 @@ public class UserService {
         // 認証情報を更新する
         SecurityContextHolder.getContext().setAuthentication(newAuthentication);
     }
+    
+    public long countUsersByRole_Name(String roleName) {
+    	return userRepository.countByRole_Name(roleName);
+    }
 }
