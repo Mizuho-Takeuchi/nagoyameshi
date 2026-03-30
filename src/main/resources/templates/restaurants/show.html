@@ -143,7 +143,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row pb-2 mb-2 border-bottom">
+                                <div class="row pb-2 mb-4 border-bottom">
                                     <div class="col-2">
                                         <span class="fw-bold">カテゴリ</span>
                                     </div>
@@ -157,6 +157,20 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <th:block sec:authorize="isAnonymous()">
+                                    <div class="text-center">
+                                        <a th:href="@{/login}" class="btn text-white shadow-sm w-50 nagoyameshi-btn">♥ お気に入り追加</a>
+                                    </div>
+                                </th:block>
+                                <th:block sec:authorize="isAuthenticated()">
+                                    <form th:unless="${isFavorite}" method="post" th:action="@{/restaurants/__${restaurant.id}__/favorites/create}" class="text-center">
+                                        <button type="submit" class="btn text-white shadow-sm w-50 nagoyameshi-btn">♥ お気に入り追加</button>
+                                    </form>
+                                    <form th:if="${isFavorite}" method="post" th:action="@{/favorites/__${favorite.id}__/delete}" class="text-center">
+                                        <button type="submit" class="btn btn-outline-primary shadow-sm w-50 nagoyameshi-remove-favorite-button">♥ お気に入り解除</button>
+                                    </form>
+                                </th:block>
                             </th>
                         </div>
                     </div>
