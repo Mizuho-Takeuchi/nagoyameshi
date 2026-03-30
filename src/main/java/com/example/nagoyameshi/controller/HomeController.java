@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.nagoyameshi.entity.Category;
 import com.example.nagoyameshi.entity.Restaurant;
+import com.example.nagoyameshi.security.UserDetailsImpl;
 import com.example.nagoyameshi.service.CategoryService;
 import com.example.nagoyameshi.service.RestaurantService;
 
@@ -27,7 +28,11 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String index(Model model,
-						Pageable pageable) {
+						@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+		String userRoleName = userDetailsImpl.getUser().getRole().getName();
+		if(userDetailsImpl != null && "ROLE_ADMIN".equals(userRoleName)) {
+			return "redirect:/admin";
+		}
 		
 		Page<Restaurant> highlyRatedRestaurants = restaurantService.findAllRestaurantsByOrderByAverageScoreDesc(PageRequest.of(0, 6));
 
