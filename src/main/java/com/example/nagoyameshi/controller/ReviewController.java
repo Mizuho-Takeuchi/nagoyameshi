@@ -136,7 +136,7 @@ public class ReviewController {
 		
 		reviewService.createReview(reviewRegisterForm, restaurant, user);
 		redirectAttributes.addFlashAttribute("successMessage", "レビューを投稿しました。");
-		return "redirect:/restaurants/{restaurantId}";
+		return "redirect:/restaurants/{restaurantId}/reviews";
 	}
 	
 	@GetMapping("/{reviewId}/edit")
@@ -217,7 +217,7 @@ public class ReviewController {
 		
 		reviewService.updateReview(reviewEditForm,review);
 		redirectAttributes.addFlashAttribute("successMessage","レビューを編集しました。");
-		return "redirect:/restaurants/{restaurantId}";
+		return "redirect:/restaurants/{restaurantId}/reviews";
 	}
 	
 	@PostMapping("/{reviewId}/delete")
@@ -248,6 +248,6 @@ public class ReviewController {
 		
 		reviewService.deleteReview(review);
 		redirectAttributes.addFlashAttribute("successMessage", "レビューを削除しました。");			
-		return "redirect:/restaurants/{restaurantId}";
+		return "redirect:/restaurants/{restaurantId}/reviews";
 	}
 }
