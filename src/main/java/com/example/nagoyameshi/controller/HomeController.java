@@ -29,9 +29,11 @@ public class HomeController {
 	@GetMapping("/")
 	public String index(Model model,
 						@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
-		String userRoleName = userDetailsImpl.getUser().getRole().getName();
-		if(userDetailsImpl != null && "ROLE_ADMIN".equals(userRoleName)) {
-			return "redirect:/admin";
+		if(userDetailsImpl != null) {
+			String userRoleName = userDetailsImpl.getUser().getRole().getName();
+			if("ROLE_ADMIN".equals(userRoleName)) {
+				return "redirect:/admin";
+			}
 		}
 		
 		Page<Restaurant> highlyRatedRestaurants = restaurantService.findAllRestaurantsByOrderByAverageScoreDesc(PageRequest.of(0, 6));

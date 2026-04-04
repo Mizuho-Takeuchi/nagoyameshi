@@ -17,8 +17,8 @@ public class WebSecurityConfig {
         http
             .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/","/signup/**").permitAll()  // すべてのユーザーにアクセスを許可するURL
-                .requestMatchers("/restaurants/{restaurantId}/reviews/**", "/reservations/**", "/restaurants/{restaurantId}/reservations/**", "/favorites/**", "/restaurants/{restaurantId}/favorites/**").hasAnyRole("FREE_MEMBER", "PAID_MEMBER")
                 .requestMatchers("/restaurants/**", "/company", "/terms").hasAnyRole("ANONYMOUS","FREE_MEMBER","PAID_MEMBER")
+                .requestMatchers("/restaurants/{restaurantId}/reviews/**", "/reservations/**", "/restaurants/{restaurantId}/reservations/**", "/favorites/**", "/restaurants/{restaurantId}/favorites/**").hasAnyRole("FREE_MEMBER", "PAID_MEMBER")
                 .requestMatchers("/subscription/register","/subscription/create").hasRole("FREE_MEMBER")
                 .requestMatchers("/subscription/edit","/subscription/update","/subscription/cancel","/subscription/delete").hasRole("PAID_MEMBER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")              
