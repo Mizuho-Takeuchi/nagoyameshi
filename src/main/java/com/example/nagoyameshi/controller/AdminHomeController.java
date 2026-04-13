@@ -26,11 +26,13 @@ public class AdminHomeController {
 	public String index(Model model) {
 		long totalFreeMembers = userService.countUsersByRole_Name("ROLE_FREE_MEMBER");
 		long totalPaidMembers = userService.countUsersByRole_Name("ROLE_PAID_MEMBER");
+		long totalAdminMembers = userService.countUsersByRole_Name("ROLE_ADMIN");
 		long totalMembers = totalFreeMembers + totalPaidMembers;
 		long totalRestaurants = restaurantService.countRestaurants();
 		long totalReservations = reservationService.countReservations();
 		model.addAttribute("totalFreeMembers", totalFreeMembers);
 		model.addAttribute("totalPaidMembers", totalPaidMembers);
+		model.addAttribute("totalAdminMembers", totalAdminMembers);
 		model.addAttribute("totalMembers", totalMembers);
 		model.addAttribute("totalRestaurants", totalRestaurants);
 		model.addAttribute("totalReservations", totalReservations);
