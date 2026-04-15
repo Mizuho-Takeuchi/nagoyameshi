@@ -1,5 +1,6 @@
 package com.example.nagoyameshi.controller;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,7 +32,21 @@ public class UserController {
 	@GetMapping
 	public String index(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
 						Model model){
-		model.addAttribute("user", userDetailsImpl.getUser());
+		User user = userDetailsImpl.getUser();
+		
+		//誕生日クーポンを表示するかどうか
+		String userRole = user.getRole().getName();
+		LocalDate today = LocalDate.now();
+		String imageName = null;
+		if("ROLE_PAID_MEMBER".equals(userRole)){
+			if(userService.isWithinBirthdayPeriod(user, today)) {
+				imageName = "bithday_coupon.PNG";
+			}
+		}
+		
+		model.addAttribute("user", user);
+		model.addAttribute("imageName", imageName);
+		
 		return "user/index";
 	}
 	

@@ -169,4 +169,25 @@ public class UserService {
     public long countUsersByRole_Name(String roleName) {
     	return userRepository.countByRole_Name(roleName);
     }
+    
+    //今日の日付が、誕生日の前後15日以内に入っているかどうかチェック
+    public boolean isWithinBirthdayPeriod(User user, LocalDate today) {
+    	LocalDate birthday = user.getBirthday();
+    	int thisYear = today.getYear();
+    	
+    	//今年と去年と来年の誕生日を生成(1月と12月の年跨ぎを考えて)
+    	for(int i = -1; i <= 1; i++) {
+    		int targetYear = thisYear + i;
+    		LocalDate targetBirthday = birthday.withYear(targetYear);
+    		
+    		LocalDate startDate = targetBirthday.minusDays(15);
+            LocalDate endDate = targetBirthday.plusDays(15);
+            
+            if(!today.isBefore(startDate) && !today.isAfter(endDate)) {
+            	return true;
+            }
+    	}
+    	
+    	return false;
+    }
 }
