@@ -190,4 +190,9 @@ public class UserService {
     	
     	return false;
     }
+    
+    //特定のロールのユーザー一覧をページングした状態で取得
+    public Page<User> findUserByRole_Name(String roleName, Pageable pageable){
+    	return userRepository.findByRole_Name(roleName, pageable);
+    }
 }
