@@ -77,6 +77,7 @@ public class RestaurantService {
 		restaurant.setHighestPrice(restaurantRegisterForm.getHighestPrice());
 	    restaurant.setPostalCode(restaurantRegisterForm.getPostalCode());
 	    restaurant.setAddress(restaurantRegisterForm.getAddress());
+	    restaurant.setMapUrl(restaurantRegisterForm.getMapUrl());
 	    restaurant.setOpeningTime(restaurantRegisterForm.getOpeningTime());
 	    restaurant.setClosingTime(restaurantRegisterForm.getClosingTime());
 	    restaurant.setSeatingCapacity(restaurantRegisterForm.getSeatingCapacity());
@@ -110,6 +111,7 @@ public class RestaurantService {
 	    restaurant.setHighestPrice(restaurantEditForm.getHighestPrice());
 	    restaurant.setPostalCode(restaurantEditForm.getPostalCode());
 	    restaurant.setAddress(restaurantEditForm.getAddress());
+	    restaurant.setMapUrl(restaurantEditForm.getMapUrl());
 	    restaurant.setOpeningTime(restaurantEditForm.getOpeningTime());
 	    restaurant.setClosingTime(restaurantEditForm.getClosingTime());
 	    restaurant.setSeatingCapacity(restaurantEditForm.getSeatingCapacity());

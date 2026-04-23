@@ -37,6 +37,8 @@ public class RestaurantEditForm {
 	@NotBlank(message = "住所を入力してください。")
 	private String address;
 	
+	private String mapUrl;
+	
 	@NotNull(message = "開店時間を選択してください。")
 	private LocalTime openingTime;
 	
