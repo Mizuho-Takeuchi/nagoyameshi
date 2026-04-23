@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS restaurants (
     opening_time TIME NOT NULL,
     closing_time TIME NOT NULL,
     seating_capacity INT NOT NULL,
+    map_url VARCHAR(2048),
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

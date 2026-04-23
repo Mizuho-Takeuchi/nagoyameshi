@@ -58,6 +58,9 @@ public class Restaurant {
 
    @Column(name = "seating_capacity")
    private Integer seatingCapacity;
+   
+   @Column(name = "map_url")
+   private String mapUrl;
 
    @Column(name = "created_at", insertable = false, updatable = false)
    private Timestamp createdAt;

@@ -150,7 +150,7 @@ public class AdminRestaurantController {
 														                restaurant.getHighestPrice(),
 														                restaurant.getPostalCode(),
 														                restaurant.getAddress(),
-														                restaurant.getOpeningTime(),
+														                restaurant.getMapUrl(),												                restaurant.getOpeningTime(),
 														                restaurant.getClosingTime(),
 														                restaurant.getSeatingCapacity(),
 														                categoryIds,
