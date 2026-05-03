@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -34,6 +36,7 @@ import com.example.nagoyameshi.service.RestaurantService;
 public class ReservationController {
 	private final ReservationService reservationService;
 	private final RestaurantService restaurantService;
+	private final Logger log = LoggerFactory.getLogger(ReservationController.class);
 	
 	public ReservationController(ReservationService reservationService,
 								RestaurantService restaurantService) {
@@ -94,6 +97,9 @@ public class ReservationController {
 						@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
 						Model model,
 						RedirectAttributes redirectAttributes) {
+		//ログ
+		log.info("Starting the process: register reservation.");
+		
 		User user = userDetailsImpl.getUser();
 		String userRoleName = user.getRole().getName();
 		if("ROLE_FREE_MEMBER".equals(userRoleName)) {
@@ -124,12 +130,15 @@ public class ReservationController {
            model.addAttribute("restaurant", restaurant);
            model.addAttribute("restaurantRegularHolidays", restaurantRegularHolidays);
            model.addAttribute("reservationRegisterForm", reservationRegisterForm);
-
-			return "reservations/register";
+           //ログ
+           log.info("Faild to register reservation: Invalid reservation time.");
+           return "reservations/register";
 		}
 		
 		reservationService.createReservation(reservationRegisterForm, user, restaurant);
 		redirectAttributes.addFlashAttribute("successMessage", "予約が完了しました。");
+		//ログ
+		log.info("Complete the process: register reservation.");
 		return "redirect:/reservations";
 	}
 	

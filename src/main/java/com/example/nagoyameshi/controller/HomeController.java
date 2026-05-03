@@ -2,6 +2,8 @@ package com.example.nagoyameshi.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,23 +21,24 @@ import com.example.nagoyameshi.service.RestaurantService;
 public class HomeController {
 	private final RestaurantService restaurantService;
 	private final CategoryService categoryService;
-	
+	private final Logger log = LoggerFactory.getLogger(HomeController.class);
+
 	public HomeController(RestaurantService restaurantService,
-						CategoryService categoryService) {
+			CategoryService categoryService) {
 		this.restaurantService = restaurantService;
 		this.categoryService = categoryService;
 	}
-	
+
 	@GetMapping("/")
 	public String index(Model model,
 						@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 		if(userDetailsImpl != null) {
 			String userRoleName = userDetailsImpl.getUser().getRole().getName();
+			
 			if("ROLE_ADMIN".equals(userRoleName)) {
 				return "redirect:/admin";
 			}
 		}
-		
 		Page<Restaurant> highlyRatedRestaurants = restaurantService.findAllRestaurantsByOrderByAverageScoreDesc(PageRequest.of(0, 6));
 
 		Page<Restaurant> newRestaurants = restaurantService.findAllRestaurantsByOrderByCreatedAtDesc(PageRequest.of(0, 6));
@@ -62,7 +65,10 @@ public class HomeController {
         model.addAttribute("ramen", ramen);
         model.addAttribute("oden", oden);
         model.addAttribute("fried", fried);
-        model.addAttribute("categories",categories);		
+        model.addAttribute("categories",categories);
+        
+        //ログ
+        log.info("A user accessed the toppage.");
 		return "index";
 	}
 }

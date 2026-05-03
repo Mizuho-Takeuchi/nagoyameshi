@@ -11,6 +11,8 @@ import java.util.UUID;
 
 import jakarta.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ public class RestaurantService {
 	private final RestaurantRepository restaurantRepository;
     private final CategoryRestaurantService categoryRestaurantService;
     private final RegularHolidayRestaurantService regularHolidayRestaurantService;
+    private final Logger log = LoggerFactory.getLogger(RestaurantService.class);
 	
 	public RestaurantService(RestaurantRepository restaurantRepository,
 							CategoryRestaurantService categoryRestaurantService,
@@ -125,6 +128,7 @@ public class RestaurantService {
 	@Transactional
 	public void deleteRestaurant(Restaurant restaurant) {
 		restaurantRepository.delete(restaurant);
+		log.info("Complete the process: delete restaurant.");
 	}
 	
 	public String generateNewFileName(String fileName) {

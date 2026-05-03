@@ -2,6 +2,8 @@ package com.example.nagoyameshi.service;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import com.example.nagoyameshi.repository.ReviewRepository;
 @Service
 public class ReviewService {
 	private final ReviewRepository reviewRepository;
+	private final Logger log = LoggerFactory.getLogger(ReviewService.class);
 	
 	public ReviewService(ReviewRepository reviewRepository) {
 		this.reviewRepository = reviewRepository;
@@ -61,6 +64,7 @@ public class ReviewService {
 	//指定したレビューをデータベースから削除する。
 	public void deleteReview(Review review) {
 		reviewRepository.delete(review);
+		log.info("Complete the process: delete review.");
 	}
 	
 	//指定したユーザーが指定した店舗のレビューをすでに投稿済みかどうかをチェックする。

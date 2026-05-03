@@ -1,0 +1,92 @@
+2026-04-26 18:32:44.572,INFO ,[],[],c.e.n.NagoyameshiApplication,"Starting NagoyameshiApplication using Java 21.0.8 with PID 16860 (C:\pleiades\2025-09\workspace\spring_boot\nagoyameshi\target\classes started by Mizuho Takeuchi in C:\pleiades\2025-09\workspace\spring_boot\nagoyameshi)"
+2026-04-26 18:32:44.593,INFO ,[],[],c.e.n.NagoyameshiApplication,"No active profile set, falling back to 1 default profile: "default""
+2026-04-26 18:32:44.896,INFO ,[],[],o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor,"Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable"
+2026-04-26 18:32:44.899,INFO ,[],[],o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor,"For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'"
+2026-04-26 18:32:51.565,INFO ,[],[],o.s.d.r.c.RepositoryConfigurationDelegate,"Bootstrapping Spring Data JPA repositories in DEFAULT mode."
+2026-04-26 18:32:51.953,INFO ,[],[],o.s.d.r.c.RepositoryConfigurationDelegate,"Finished Spring Data repository scanning in 344 ms. Found 13 JPA repository interfaces."
+2026-04-26 18:32:54.871,INFO ,[],[],o.s.boot.tomcat.TomcatWebServer,"Tomcat initialized with port 8080 (http)"
+2026-04-26 18:32:54.937,INFO ,[],[],o.a.catalina.core.StandardService,"Starting service [Tomcat]"
+2026-04-26 18:32:54.939,INFO ,[],[],o.a.catalina.core.StandardEngine,"Starting Servlet engine: [Apache Tomcat/11.0.18]"
+2026-04-26 18:32:55.178,INFO ,[],[],o.s.b.w.c.s.WebApplicationContextInitializer,"Root WebApplicationContext: initialization completed in 10276 ms"
+2026-04-26 18:32:55.934,INFO ,[],[],com.zaxxer.hikari.HikariDataSource,"HikariPool-1 - Starting..."
+2026-04-26 18:32:56.763,INFO ,[],[],com.zaxxer.hikari.pool.HikariPool,"HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1a96dd88"
+2026-04-26 18:32:56.771,INFO ,[],[],com.zaxxer.hikari.HikariDataSource,"HikariPool-1 - Start completed."
+2026-04-26 18:32:58.162,INFO ,[],[],org.hibernate.orm.jpa,"HHH008540: Processing PersistenceUnitInfo [name: default]"
+2026-04-26 18:32:58.457,INFO ,[],[],org.hibernate.orm.core,"HHH000001: Hibernate ORM core version 7.2.4.Final"
+2026-04-26 18:33:01.034,INFO ,[],[],o.s.o.j.p.SpringPersistenceUnitInfo,"No LoadTimeWeaver setup: ignoring JPA class transformer"
+2026-04-26 18:33:01.400,WARN ,[],[],org.hibernate.orm.core,"HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly.The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions."
+2026-04-26 18:33:01.483,INFO ,[],[],o.hibernate.orm.connections.pooling,"HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/springboot_nagoyameshi]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 5.5.5
+	Default catalog/schema: springboot_nagoyameshi/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown"
+2026-04-26 18:33:07.031,INFO ,[],[],org.hibernate.orm.core,"HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)"
+2026-04-26 18:33:07.071,INFO ,[],[],o.s.o.j.LocalContainerEntityManagerFactoryBean,"Initialized JPA EntityManagerFactory for persistence unit 'default'"
+2026-04-26 18:33:07.525,INFO ,[],[],o.s.d.j.r.q.QueryEnhancerFactories,"Hibernate is in classpath; If applicable, HQL parser will be used."
+2026-04-26 18:33:13.954,WARN ,[],[],o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration,"spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning"
+2026-04-26 18:33:14.374,INFO ,[],[],o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer,"Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl"
+2026-04-26 18:33:15.562,INFO ,[],[],o.s.b.w.a.WelcomePageHandlerMapping,"Adding welcome page template: index"
+2026-04-26 18:33:17.686,INFO ,[],[],o.s.boot.tomcat.TomcatWebServer,"Tomcat started on port 8080 (http) with context path '/'"
+2026-04-26 18:33:17.714,INFO ,[],[],c.e.n.NagoyameshiApplication,"Started NagoyameshiApplication in 35.788 seconds (process running for 56.036)"
+2026-04-26 18:33:36.340,INFO ,[],[],o.a.c.c.C.[Tomcat].[localhost].[/],"Initializing Spring DispatcherServlet 'dispatcherServlet'"
+2026-04-26 18:33:36.342,INFO ,[],[],o.s.web.servlet.DispatcherServlet,"Initializing Servlet 'dispatcherServlet'"
+2026-04-26 18:33:36.358,INFO ,[],[],o.s.web.servlet.DispatcherServlet,"Completed initialization in 10 ms"
+2026-04-26 18:33:49.418,INFO ,[],[],c.e.n.security.WebSecurityConfig,"ログイン成功: ユーザー名 = taro.samurai@example.com"
+2026-04-26 18:33:52.501,INFO ,[Role(id=1, name=ROLE_FREE_MEMBER)],[1],c.e.n.controller.HomeController,"A user accessed the toppage."
+2026-04-26 18:34:03.196,INFO ,[],[],c.e.n.security.WebSecurityConfig,"ログアウト成功: ユーザー名 = taro.samurai@example.com"
+2026-04-26 18:34:04.799,INFO ,[Guest],[],c.e.n.controller.HomeController,"A user accessed the toppage."
+2026-04-26 18:35:32.453,INFO ,[],[],o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener,"Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)"
+2026-04-26 18:35:32.483,INFO ,[],[],o.s.boot.tomcat.GracefulShutdown,"Commencing graceful shutdown. Waiting for active requests to complete"
+2026-04-26 18:35:32.512,INFO ,[],[],o.s.boot.tomcat.GracefulShutdown,"Graceful shutdown complete"
+2026-04-26 18:35:32.542,INFO ,[],[],o.s.o.j.LocalContainerEntityManagerFactoryBean,"Closing JPA EntityManagerFactory for persistence unit 'default'"
+2026-04-26 18:35:32.570,INFO ,[],[],com.zaxxer.hikari.HikariDataSource,"HikariPool-1 - Shutdown initiated..."
+2026-04-26 18:35:32.612,INFO ,[],[],com.zaxxer.hikari.HikariDataSource,"HikariPool-1 - Shutdown completed."
+2026-04-26 18:35:33.265,INFO ,[],[],c.e.n.NagoyameshiApplication,"Starting NagoyameshiApplication using Java 21.0.8 with PID 16860 (C:\pleiades\2025-09\workspace\spring_boot\nagoyameshi\target\classes started by Mizuho Takeuchi in C:\pleiades\2025-09\workspace\spring_boot\nagoyameshi)"
+2026-04-26 18:35:33.266,INFO ,[],[],c.e.n.NagoyameshiApplication,"No active profile set, falling back to 1 default profile: "default""
+2026-04-26 18:35:34.712,INFO ,[],[],o.s.d.r.c.RepositoryConfigurationDelegate,"Bootstrapping Spring Data JPA repositories in DEFAULT mode."
+2026-04-26 18:35:34.956,INFO ,[],[],o.s.d.r.c.RepositoryConfigurationDelegate,"Finished Spring Data repository scanning in 231 ms. Found 13 JPA repository interfaces."
+2026-04-26 18:35:35.838,INFO ,[],[],o.s.boot.tomcat.TomcatWebServer,"Tomcat initialized with port 8080 (http)"
+2026-04-26 18:35:35.841,INFO ,[],[],o.a.catalina.core.StandardService,"Starting service [Tomcat]"
+2026-04-26 18:35:35.842,INFO ,[],[],o.a.catalina.core.StandardEngine,"Starting Servlet engine: [Apache Tomcat/11.0.18]"
+2026-04-26 18:35:35.986,INFO ,[],[],o.s.b.w.c.s.WebApplicationContextInitializer,"Root WebApplicationContext: initialization completed in 2711 ms"
+2026-04-26 18:35:36.244,INFO ,[],[],com.zaxxer.hikari.HikariDataSource,"HikariPool-2 - Starting..."
+2026-04-26 18:35:36.263,INFO ,[],[],com.zaxxer.hikari.pool.HikariPool,"HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5a04d2d7"
+2026-04-26 18:35:36.264,INFO ,[],[],com.zaxxer.hikari.HikariDataSource,"HikariPool-2 - Start completed."
+2026-04-26 18:35:36.567,INFO ,[],[],org.hibernate.orm.jpa,"HHH008540: Processing PersistenceUnitInfo [name: default]"
+2026-04-26 18:35:36.926,INFO ,[],[],o.s.o.j.p.SpringPersistenceUnitInfo,"No LoadTimeWeaver setup: ignoring JPA class transformer"
+2026-04-26 18:35:36.939,WARN ,[],[],org.hibernate.orm.core,"HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly.The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions."
+2026-04-26 18:35:36.943,INFO ,[],[],o.hibernate.orm.connections.pooling,"HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/springboot_nagoyameshi]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 5.5.5
+	Default catalog/schema: springboot_nagoyameshi/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown"
+2026-04-26 18:35:38.448,INFO ,[],[],org.hibernate.orm.core,"HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)"
+2026-04-26 18:35:38.454,INFO ,[],[],o.s.o.j.LocalContainerEntityManagerFactoryBean,"Initialized JPA EntityManagerFactory for persistence unit 'default'"
+2026-04-26 18:35:40.481,WARN ,[],[],o.s.b.j.a.JpaBaseConfiguration$JpaWebConfiguration,"spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning"
+2026-04-26 18:35:40.688,INFO ,[],[],o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer,"Global AuthenticationManager configured with UserDetailsService bean with name userDetailsServiceImpl"
+2026-04-26 18:35:41.284,INFO ,[],[],o.s.b.w.a.WelcomePageHandlerMapping,"Adding welcome page template: index"
+2026-04-26 18:35:42.039,INFO ,[],[],o.s.boot.tomcat.TomcatWebServer,"Tomcat started on port 8080 (http) with context path '/'"
+2026-04-26 18:35:42.077,INFO ,[],[],c.e.n.NagoyameshiApplication,"Started NagoyameshiApplication in 9.028 seconds (process running for 200.399)"
+2026-04-26 18:35:42.099,INFO ,[],[],o.s.b.d.a.ConditionEvaluationDeltaLoggingListener,"Condition evaluation unchanged"
+2026-04-26 18:37:46.818,INFO ,[],[],o.a.c.c.C.[Tomcat].[localhost].[/],"Initializing Spring DispatcherServlet 'dispatcherServlet'"
+2026-04-26 18:37:46.826,INFO ,[],[],o.s.web.servlet.DispatcherServlet,"Initializing Servlet 'dispatcherServlet'"
+2026-04-26 18:37:46.870,INFO ,[],[],o.s.web.servlet.DispatcherServlet,"Completed initialization in 40 ms"
+2026-04-26 18:48:32.573,WARN ,[],[],com.zaxxer.hikari.pool.HikariPool,"HikariPool-2 - Thread starvation or clock leap detected (housekeeper delta=56s52ms552µs800ns)."
+2026-04-26 18:48:45.791,INFO ,[],[],c.e.n.security.WebSecurityConfig,"Login successful: user=taro.samurai@example.com"
+2026-04-26 18:48:48.156,INFO ,[Role(id=1, name=ROLE_FREE_MEMBER)],[1],c.e.n.controller.HomeController,"A user accessed the toppage."
+2026-04-26 18:49:00.588,INFO ,[],[],c.e.n.security.WebSecurityConfig,"Logout successful: user=taro.samurai@example.com"
+2026-04-26 18:49:02.420,INFO ,[Guest],[],c.e.n.controller.HomeController,"A user accessed the toppage."
