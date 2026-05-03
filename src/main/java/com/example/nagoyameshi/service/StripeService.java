@@ -4,6 +4,8 @@ import java.util.List;
 
 import jakarta.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,9 @@ import com.stripe.param.SubscriptionListParams;
 
 
 @Service
-public class StripeService {    
+public class StripeService {
+	private final Logger log = LoggerFactory.getLogger(StripeService.class);
+	
     @Value("${stripe.api-key}")
     private String apiKey;
     
@@ -86,6 +90,8 @@ public class StripeService {
 																					.setCustomer(customerId)
 																					.addItem(item)
 																					.build();
+		//サブスクリプション追加ログ
+		log.info("Subscription created: ID={}, Customer={}", priceId, customerId);
 		return Subscription.create(subscriptionCreateParams);
 	}
     
@@ -122,6 +128,8 @@ public class StripeService {
     	for(Subscription subscription : subscriptions) {
     		SubscriptionCancelParams subscriptionCancelParams = SubscriptionCancelParams.builder().build();
     		subscription.cancel(subscriptionCancelParams);
+    		//サブスクリプション解除ログ
+    		log.info("Subscription canceled: ID={}, Customer={}", subscription.getId(), subscription.getCustomer());
     	}
     }
 }

@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import jakarta.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import com.example.nagoyameshi.repository.ReservationRepository;
 @Service
 public class ReservationService {
 	private final ReservationRepository reservationRepository;
+	private final Logger log = LoggerFactory.getLogger(ReservationService.class);
 	
 	public ReservationService(ReservationRepository reservationRepository) {
 		this.reservationRepository = reservationRepository;
@@ -57,6 +60,7 @@ public class ReservationService {
 	@Transactional
 	public void deleteReservation(Reservation reservation) {
 		reservationRepository.delete(reservation);
+		log.info("Complete the process: delete reservation.");
 	}
 	
 	@Transactional

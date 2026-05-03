@@ -2,6 +2,8 @@ package com.example.nagoyameshi.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,7 @@ public class SubscriptionController {
 	
 	private final StripeService stripeService;
 	private final UserService userService;
+	private final Logger log = LoggerFactory.getLogger(SubscriptionController.class);
 	
 	public SubscriptionController(StripeService stripeService,
 								UserService userService) {
@@ -76,6 +79,7 @@ public class SubscriptionController {
         userService.refreshAuthenticationByRole("ROLE_PAID_MEMBER");
 		
         redirectAttributes.addFlashAttribute("successMessage", "有料プランへの登録が完了しました。");
+        log.info("Complete the process: Register for a paid plan.");
         return "redirect:/";
 	}
 	
@@ -150,6 +154,7 @@ public class SubscriptionController {
 		userService.updateRole(user, "ROLE_FREE_MEMBER");
         userService.refreshAuthenticationByRole("ROLE_FREE_MEMBER");
         redirectAttributes.addFlashAttribute("successMessage","有料プランを解約しました。");
+        log.info("Complete the process: Canceling a paid plan.");
 		return "redirect:/";
 	}
 }

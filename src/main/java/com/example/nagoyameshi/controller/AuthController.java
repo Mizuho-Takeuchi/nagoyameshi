@@ -2,6 +2,8 @@ package com.example.nagoyameshi.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +27,7 @@ public class AuthController {
 	private final UserService userService;
 	private final SignupEventPublisher signupEventPublisher;
 	private final VerificationTokenService verificationTokenService;
+	private final Logger log = LoggerFactory.getLogger(AuthController.class);
 	
 	public AuthController(UserService userService,
 						SignupEventPublisher signupEventPublisher,
@@ -72,7 +75,8 @@ public class AuthController {
         String url = new String(httpServletRequest.getRequestURL());
         signupEventPublisher.publishSignupEvent(user, url);
         redirectAttributes.addFlashAttribute("successMessage", "ご入力いただいたメールアドレスに認証メールを送信しました。メールに記載されているリンクをクリックし、会員登録を完了してください。");        
-
+        //ログ
+        log.info("Starting the process: user registration.");
 		return "redirect:/";
 	}
 	
@@ -87,8 +91,10 @@ public class AuthController {
 			User user = verificationToken.getUser();
 			userService.enableUser(user);
 			model.addAttribute("successMessage", "会員登録が完了しました。");
+			log.info("Successfully completed email verification: User account activated.");
 		}else {
 			model.addAttribute("errorMessage", "トークンが無効です。");
+			log.info("Faild to verify email: Invalid verification token.");
 		}
 		
 		return "auth/verify";
