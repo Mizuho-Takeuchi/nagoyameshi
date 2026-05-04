@@ -20,7 +20,12 @@
                             <hr class="mb-4">
 
                             <div th:if="${param.error}" class="alert alert-danger">
-                                メールアドレスまたはパスワードが正しくありません。
+								<span th:if="${param.error[0] == 'locked'}">
+							        ログインに一定回数以上失敗したためアカウントロック中です。30分後に再試行してください。
+							    </span>
+							    <span th:if="${param.error[0] == 'badCredentials'}">
+							        メールアドレスまたはパスワードが正しくありません。
+							    </span>
                             </div>
 
                             <form th:action="@{/login}" method="post">

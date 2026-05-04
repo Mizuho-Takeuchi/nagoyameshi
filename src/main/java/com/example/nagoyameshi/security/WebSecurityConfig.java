@@ -3,6 +3,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -10,11 +11,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.example.nagoyameshi.service.UserService;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
+	private final UserService userService;
 	private final Logger log = LoggerFactory.getLogger(WebSecurityConfig.class);
+	
+	public WebSecurityConfig(@Lazy UserService userService) {
+		this.userService = userService;
+	}
+	
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,14 +43,33 @@ public class WebSecurityConfig {
                 .failureUrl("/login?error")       // ログイン失敗時のリダイレクト先URL
                 //ログイン成功ログ出力
                 .successHandler((request, response, authentication) -> {
+                	String email = request.getParameter("username");
+                	userService.setFailedAttemptZero(email);
+                	
                     log.info("Login successful: user={}", authentication.getName());
                     response.sendRedirect("/?loggedIn"); // 成功時のリダイレクト先を指定
                 })
                 
-                //ログイン失敗ログ出力
+                //ログイン失敗
                 .failureHandler((request, response, exception) -> {
-                    log.warn("Login failed: reason={}", exception.getMessage());
-                    response.sendRedirect("/login?error");
+                    //エラーを分ける
+                    String errorParam = "";
+                    String email = request.getParameter("username");
+                    
+                    if (exception instanceof org.springframework.security.authentication.LockedException) {
+                        // アカウントロック中の場合
+                        log.warn("Login failed: User {} is locked.", email);
+                        errorParam = "locked";
+                    } else {
+                        // パスワード間違いの場合
+                        if (email != null) {
+                            userService.lockUser(email);
+                        }
+                        log.warn("Login failed: reason={}", exception.getMessage());
+                        errorParam = "badCredentials";
+                    }
+                    
+                    response.sendRedirect("/login?error="+errorParam);
                 })
                 .permitAll()
             )

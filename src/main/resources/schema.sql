@@ -17,6 +17,9 @@ CREATE TABLE IF NOT EXISTS users (
    role_id INT NOT NULL,
    enabled BOOLEAN NOT NULL,
    stripe_customer_id VARCHAR(255) UNIQUE,
+   locked_until DATETIME,
+   failed_attempt INT DEFAULT 0,
+   last_failed_at DATETIME,
    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    FOREIGN KEY (role_id) REFERENCES roles (id)

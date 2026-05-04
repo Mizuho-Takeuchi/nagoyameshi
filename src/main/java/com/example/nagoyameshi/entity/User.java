@@ -59,6 +59,15 @@ public class User {
 
    @Column(name = "stripe_customer_id")
    private String stripeCustomerId;
+   
+   @Column(name = "locked_until")
+   private Timestamp lockedUntil;
+   
+   @Column(name = "failed_attempt")
+   private Integer failedAttempt;
+   
+   @Column(name = "last_failed_at")
+   private Timestamp lastFailedAt;
 
    @Column(name = "created_at", insertable = false, updatable = false)
    private Timestamp createdAt;
