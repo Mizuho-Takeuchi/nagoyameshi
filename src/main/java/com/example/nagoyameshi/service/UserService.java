@@ -1,7 +1,10 @@
 package com.example.nagoyameshi.service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -195,4 +198,51 @@ public class UserService {
     public Page<User> findUserByRole_Name(String roleName, Pageable pageable){
     	return userRepository.findByRole_Name(roleName, pageable);
     }
+    
+    //ログイン5回連続(30分以内)失敗時に、usersテーブルに30分後の日時を記録
+   public void lockUser(String email) {
+	   User user = userRepository.findByEmail(email);
+	   
+	   if(user != null) {
+		 LocalDateTime now = LocalDateTime.now();
+		 int faildAttempt = user.getFailedAttempt();
+
+		 if(faildAttempt == 5) {
+			 user.setLockedUntil(Timestamp.valueOf(now.plusMinutes(30)));
+			 userRepository.save(user);
+		 }else {
+		 
+			 if(user.getLastFailedAt() != null){
+				 Timestamp lastFailed = user.getLastFailedAt();
+				 long lastFaild = ChronoUnit.MINUTES.between(lastFailed.toLocalDateTime(), now);
+				 
+				 if(lastFaild >= 30) {
+					 faildAttempt = 1;
+				 }else {
+					 faildAttempt = faildAttempt + 1;
+				 }
+			 }else{
+				 faildAttempt = 1;
+			 }
+			 
+			 user.setFailedAttempt(faildAttempt);
+			 user.setLastFailedAt(Timestamp.valueOf(now));	
+			 userRepository.save(user);
+			 
+			 if(user.getFailedAttempt() == 5) {
+				 user.setLockedUntil(Timestamp.valueOf(now.plusMinutes(30)));
+				 userRepository.save(user);
+			 }
+		 }
+	   }
+   }
+   
+   //ログイン成功時に、usersテーブルのfailed_attemptに0にする
+   public void setFailedAttemptZero(String email) {
+	   User user = userRepository.findByEmail(email);
+	   if(user != null) {
+		   user.setFailedAttempt(0);
+		   userRepository.save(user);
+	   }
+   }
 }
