@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.transaction.Transactional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +24,8 @@ import com.example.nagoyameshi.form.SignupForm;
 import com.example.nagoyameshi.form.UserEditForm;
 import com.example.nagoyameshi.repository.RoleRepository;
 import com.example.nagoyameshi.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
@@ -207,10 +207,7 @@ public class UserService {
 		 LocalDateTime now = LocalDateTime.now();
 		 int faildAttempt = user.getFailedAttempt();
 
-		 if(faildAttempt == 5) {
-			 user.setLockedUntil(Timestamp.valueOf(now.plusMinutes(30)));
-			 userRepository.save(user);
-		 }else {
+		 if(faildAttempt != 5) {
 		 
 			 if(user.getLastFailedAt() != null){
 				 Timestamp lastFailed = user.getLastFailedAt();
@@ -227,12 +224,10 @@ public class UserService {
 			 
 			 user.setFailedAttempt(faildAttempt);
 			 user.setLastFailedAt(Timestamp.valueOf(now));	
-			 userRepository.save(user);
-			 
-			 if(user.getFailedAttempt() == 5) {
+			 if(faildAttempt == 5) {
 				 user.setLockedUntil(Timestamp.valueOf(now.plusMinutes(30)));
-				 userRepository.save(user);
 			 }
+			 userRepository.save(user);
 		 }
 	   }
    }
