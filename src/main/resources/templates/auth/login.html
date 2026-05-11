@@ -19,14 +19,20 @@
 
                             <hr class="mb-4">
 
-                            <div th:if="${param.error}" class="alert alert-danger">
-								<span th:if="${param.error[0] == 'locked'}">
+							<div th:if="${param.error}" class="alert alert-danger">
+							    <!-- param.error[0] を使って比較 -->
+							    <span th:if="${#strings.equals(param.error, 'locked')}">
 							        ログインに一定回数以上失敗したためアカウントロック中です。30分後に再試行してください。
 							    </span>
-							    <span th:if="${param.error[0] == 'badCredentials'}">
+							    <span th:if="${#strings.equals(param.error, 'badCredentials')}">
 							        メールアドレスまたはパスワードが正しくありません。
 							    </span>
-                            </div>
+							    
+							    <!-- もし上記2つに当てはまらないエラー（ただの ?error など）の場合の表示 -->
+							    <span th:if="${!#strings.equals(param.error, 'locked') and !#strings.equals(param.error, 'badCredentials')}">
+							        ログインに失敗しました。
+							    </span>
+							</div>
 
                             <form th:action="@{/login}" method="post">
                                 <div class="form-group mb-3">

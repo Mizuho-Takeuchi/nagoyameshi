@@ -28,7 +28,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/","/signup/**").permitAll()  // すべてのユーザーにアクセスを許可するURL
+                .requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/","/signup/**", "/login").permitAll()  // すべてのユーザーにアクセスを許可するURL
                 .requestMatchers("/restaurants/**", "/company", "/terms").hasAnyRole("ANONYMOUS","FREE_MEMBER","PAID_MEMBER")
                 .requestMatchers("/restaurants/{restaurantId}/reviews/**", "/reservations/**", "/restaurants/{restaurantId}/reservations/**", "/favorites/**", "/restaurants/{restaurantId}/favorites/**").hasAnyRole("FREE_MEMBER", "PAID_MEMBER")
                 .requestMatchers("/subscription/register","/subscription/create").hasRole("FREE_MEMBER")
@@ -56,20 +56,23 @@ public class WebSecurityConfig {
                     String errorParam = "";
                     String email = request.getParameter("username");
                     
-                    if (exception instanceof org.springframework.security.authentication.LockedException) {
+                    //デバック用
+                    boolean a = userService.isAccountLocked(email);
+                    
+                    if (userService.isAccountLocked(email) == true) {
                         // アカウントロック中の場合
-                        log.warn("Login failed: User {} is locked.", email);
+                        log.info("Login failed: User {} is locked.", email);
                         errorParam = "locked";
                     } else {
                         // パスワード間違いの場合
                         if (email != null) {
                             userService.lockUser(email);
                         }
-                        log.warn("Login failed: reason={}", exception.getMessage());
+                        log.info("Login failed: reason={}", exception.getMessage());
                         errorParam = "badCredentials";
                     }
                     
-                    response.sendRedirect("/login?error="+errorParam);
+                    response.sendRedirect("/login?error=" + errorParam);
                 })
                 .permitAll()
             )
