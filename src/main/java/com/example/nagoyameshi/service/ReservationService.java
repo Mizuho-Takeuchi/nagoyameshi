@@ -70,4 +70,12 @@ public class ReservationService {
 		
 		return Duration.between(now,reservationDataTime).toHours() >= 2;
 	}
+	
+	public Page<Reservation> findReservationsByRestaurantNameLike(String keyword,Pageable pageable){
+		return reservationRepository.findByRestaurantNameLike(keyword, pageable);
+	}
+	
+	public Page<Reservation> findAllReservationsByOrderByCreatedAtDesc(Pageable pageable){
+		return reservationRepository.findAllByOrderByCreatedAtDesc(pageable);
+	}
 }

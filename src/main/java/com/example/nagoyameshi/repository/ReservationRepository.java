@@ -10,4 +10,6 @@ import com.example.nagoyameshi.entity.User;
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
    public Page<Reservation> findByUserOrderByReservedDatetimeDesc(Pageable pageable, User user);
    public Reservation findFirstByOrderByIdDesc();
+   public Page<Reservation> findByRestaurantNameLike(String keyword, Pageable pageable);
+   public Page<Reservation> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }
