@@ -41,5 +41,5 @@ public class Reservation {
 	private Timestamp createdAt;
 	
 	@Column(name = "updated_at", insertable = false, updatable = false)
-	private Timestamp updateAt;
+	private Timestamp updatedAt;
 }
