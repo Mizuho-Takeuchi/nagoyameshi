@@ -44,8 +44,16 @@ public class WebSecurityConfig {
                 //ログイン成功ログ出力
                 .successHandler((request, response, authentication) -> {
                 	String email = request.getParameter("username");
-                	userService.setFailedAttemptZero(email);
                 	
+                	//アカウントロックの時間が未来だったら、ログイン失敗に流す
+                	if(userService.isAccountLocked(email)) {
+                		log.info("Login failed: User {} is locked.", email);
+                		response.sendRedirect("/login?error=locked");
+                		return ;
+                	}
+                	
+                	//正常のログイン処理
+                	userService.setFailedAttemptZero(email);
                     log.info("Login successful: user={}", authentication.getName());
                     response.sendRedirect("/?loggedIn"); // 成功時のリダイレクト先を指定
                 })
