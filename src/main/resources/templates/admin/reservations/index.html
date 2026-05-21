@@ -31,38 +31,34 @@
 									<span th:text="${errorMessage}"></span>
 								</div>
 
-								<div class="d-flex justify-content-between align-items-end flex-wrap">
-									<form method="get" th:action="@{/admin/restaurants}"
-										class="nagoyaemshi-admin-search-box mb-3">
-										<div class="input-group">
+								<div class="d-flex justify-content-between align-items-end flex-wrap w-100">
+									<form method="get" th:action="@{/admin/reservations}"
+										class="nagoyaemshi-admin-search-box mb-3 w-100">
+										<div class="d-flex align-items-center gap-2 flex-nowrap">
+
 											<input type="text" class="form-control" name="keyword" th:value="${keyword}"
-												placeholder="店舗名で検索">
-											<button type="submit"
-												class="btn text-white shadow-sm nagoyameshi-btn">検索</button>
+												placeholder="店舗名で検索" style="min-width: 150px; flex-grow: 1;">
+
+											<input type="date" name="startDate" th:value="${startDate}"
+												class="form-control" style="width: 150px; flex-shrink: 0;">
+
+											<span class="mx-1" style="flex-shrink: 0;">～</span>
+
+											<input type="date" name="endDate" th:value="${endDate}" class="form-control"
+												style="width: 150px; flex-shrink: 0;">
+
+											<!-- 検索ボタン -->
+											<button type="submit" class="btn text-white shadow-sm nagoyameshi-btn ms-1"
+												style="flex-shrink: 0;">検索</button>
+
+											<!-- ダウンロードボタン -->
+											<button type="submit" th:formaction="@{/admin/reservations/download}"
+												class="btn btn-outline-secondary ms-1" style="flex-shrink: 0;">
+												ダウンロード
+											</button>
+
 										</div>
 									</form>
-
-								</div>
-
-								<!-- 期間検索フォーム -->
-								<div class="row mb-3">
-									<div class="col-md-8">
-										<form th:action="@{/admin/reservations}" method="get"
-											class="d-flex align-items-center gap-2">
-											<!-- 開始日 -->
-											<input type="date" name="startDate" th:value="${startDate}"
-												class="form-control" style="max-width: 200px;">
-											<span>～</span>
-											<!-- 終了日 -->
-											<input type="date" name="endDate" th:value="${endDate}" class="form-control"
-												style="max-width: 200px;">
-
-											<button type="submit"
-												class="btn text-white shadow-sm nagoyameshi-btn">検索</button>
-											<a th:href="@{/admin/reservations}"
-												class="btn btn-outline-secondary">クリア</a>
-										</form>
-									</div>
 								</div>
 
 								<div>
@@ -74,7 +70,7 @@
 								<table class="table table-hover">
 									<thead>
 										<tr>
-											<th scope="col">ID</th>
+											<th scope="col">予約ID</th>
 											<th scope="col">ユーザー</th>
 											<th scope="col">店舗名</th>
 											<th scope="col">予約日時</th>
@@ -86,12 +82,18 @@
 									<tbody>
 										<tr th:each="reservation : ${reservationPage}">
 											<td th:text="${reservation.id}"></td>
-											<td th:text="${reservation.user?.name}"></td>
-											<td th:text="${reservation.restaurant.name}"></td>
 											<td
-												th:text="${#temporals.format(reservation.reservedDatetime, 'yyyy年M月d日 H時mm分')}">
+												th:text="${reservation.user != null ? reservation.user.name : '退会済みユーザー'}">
 											</td>
-											<td th:text="${reservation.numberOfPeople + '名'}"></td>
+											<td
+												th:text="${reservation.restaurant != null ? reservation.restaurant.name : '削除された店舗'}">
+											</td>
+											<td
+												th:text="${reservation.reservedDatetime != null ? #temporals.format(reservation.reservedDatetime, 'yyyy年M月d日 H時mm分') : ''}">
+											</td>
+											<td
+												th:text="${reservation.numberOfPeople != null ? reservation.numberOfPeople + '名' : ''}">
+											</td>
 											<td
 												th:text="${reservation.createdAt != null ? #dates.format(reservation.createdAt, 'yyyy年M月d日 H時mm分') : ''}">
 											</td>
@@ -103,13 +105,15 @@
 								</table>
 
 								<!-- ページネーション -->
-								<div th:if="${reservationPage.getTotalPages() > 1}" class="d-flex justify-content-center">
+								<div th:if="${reservationPage.getTotalPages() > 1}"
+									class="d-flex justify-content-center">
 									<nav aria-label="予約一覧ページ">
 										<ul class="pagination">
 
 											<!-- 前へボタン (‹) -->
 											<li class="page-item">
-												<span th:if="${reservationPage.isFirst()}" class="page-link disabled">‹</span>
+												<span th:if="${reservationPage.isFirst()}"
+													class="page-link disabled">‹</span>
 												<!-- 期間検索の条件を引き継ぐように修正 -->
 												<a th:unless="${reservationPage.isFirst()}"
 													th:href="@{/admin/reservations(page = ${reservationPage.getNumber() - 1}, startDate = ${startDate}, endDate = ${endDate})}"
@@ -134,7 +138,8 @@
 
 											<!-- 次へボタン (›) -->
 											<li class="page-item">
-												<span th:if="${reservationPage.isLast()}" class="page-link disabled">›</span>
+												<span th:if="${reservationPage.isLast()}"
+													class="page-link disabled">›</span>
 												<!-- 期間検索の条件を引き継ぐように修正 -->
 												<a th:unless="${reservationPage.isLast()}"
 													th:href="@{/admin/reservations(page = ${reservationPage.getNumber() + 1}, startDate = ${startDate}, endDate = ${endDate})}"
