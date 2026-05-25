@@ -74,43 +74,43 @@ public class ReservationService {
 	
 	//管理画面一覧表示用
 	public Page<Reservation> findReservationsByRestaurantNameLike(String keyword,Pageable pageable){
-		return reservationRepository.findByRestaurantNameLike("%"+keyword+"%", pageable);
+		return reservationRepository.findByRestaurantNameLikeOrderByReservedDatetimeDesc("%"+keyword+"%", pageable);
 	}
 	
 	public Page<Reservation> findAllReservations(Pageable pageable){
-		return reservationRepository.findAll(pageable);
+		return reservationRepository.findAllByOrderByReservedDatetimeDesc(pageable);
 	}
 	
 	public Page<Reservation> findReservationsByRestaurantNameLikeAndReservedDatetimeBetween(String keyword, 
 																						    LocalDateTime start, 
 																						    LocalDateTime end, 
 																						    Pageable pageable){
-		return reservationRepository.findByRestaurantNameLikeAndReservedDatetimeBetween("%"+keyword+"%", start, end, pageable);
+		return reservationRepository.findByRestaurantNameLikeAndReservedDatetimeBetweenOrderByReservedDatetimeDesc("%"+keyword+"%", start, end, pageable);
 	}
 	
 	public Page<Reservation> findReservationsByReservedDatetimeBetween(LocalDateTime start, 
 																	    LocalDateTime end, 
 																	    Pageable pageable){
-		return reservationRepository.findByReservedDatetimeBetween(start, end, pageable);
+		return reservationRepository.findByReservedDatetimeBetweenOrderByReservedDatetimeDesc(start, end, pageable);
 	}
 	
 	//CSV出力用
 	public List<Reservation> findReservationsByRestaurantNameLike(String keyword){
-		return reservationRepository.findByRestaurantNameLike("%"+keyword+"%");
+		return reservationRepository.findByRestaurantNameLikeOrderByReservedDatetimeDesc("%"+keyword+"%");
 	}
 	
 	public List<Reservation> findAllReservations(){
-		return reservationRepository.findAll();
+		return reservationRepository.findAllByOrderByReservedDatetimeDesc();
 	}
 	
 	public List<Reservation> findReservationsByRestaurantNameLikeAndReservedDatetimeBetween(String keyword, 
 																						    	LocalDateTime start, 
 																						    	LocalDateTime end){
-		return reservationRepository.findByRestaurantNameLikeAndReservedDatetimeBetween("%"+keyword+"%", start, end);
+		return reservationRepository.findByRestaurantNameLikeAndReservedDatetimeBetweenOrderByReservedDatetimeDesc("%"+keyword+"%", start, end);
 	}
 	
 	public List<Reservation> findReservationsByReservedDatetimeBetween(LocalDateTime start, 
 																	    	LocalDateTime end){
-		return reservationRepository.findByReservedDatetimeBetween(start, end);
+		return reservationRepository.findByReservedDatetimeBetweenOrderByReservedDatetimeDesc(start, end);
 	}
 }
