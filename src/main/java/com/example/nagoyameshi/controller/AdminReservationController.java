@@ -135,7 +135,7 @@ public class AdminReservationController {
 				//人数
 				sb.append(reservation.getNumberOfPeople()).append(",");
 				//予約作成日
-				sb.append(reservation.getCreatedAt() != null ? reservation.getCreatedAt() : "");
+				sb.append(reservation.getCreatedAt() != null ? reservation.getCreatedAt() : "").append(",");
 				//最終編集日
 				sb.append(reservation.getUpdatedAt() != null ? reservation.getUpdatedAt() : "");
 				

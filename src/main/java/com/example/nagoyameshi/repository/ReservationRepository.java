@@ -14,21 +14,21 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
    public Page<Reservation> findByUserOrderByReservedDatetimeDesc(Pageable pageable, User user);
    public Reservation findFirstByOrderByIdDesc();
    //管理者画面表示用
-   public Page<Reservation> findByRestaurantNameLike(String keyword, Pageable pageable);
-   public Page<Reservation> findByRestaurantNameLikeAndReservedDatetimeBetween(String keyword, 
+   public Page<Reservation> findByRestaurantNameLikeOrderByReservedDatetimeDesc(String keyword, Pageable pageable);
+   public Page<Reservation> findByRestaurantNameLikeAndReservedDatetimeBetweenOrderByReservedDatetimeDesc(String keyword, 
 																			    LocalDateTime start, 
 																			    LocalDateTime end, 
 																			    Pageable pageable);
-   public Page<Reservation> findAll(Pageable pageable);
-   public Page<Reservation> findByReservedDatetimeBetween(LocalDateTime start, 
+   public Page<Reservation> findAllByOrderByReservedDatetimeDesc(Pageable pageable);
+   public Page<Reservation> findByReservedDatetimeBetweenOrderByReservedDatetimeDesc(LocalDateTime start, 
 		   													LocalDateTime end, 
 														    Pageable pageable);
    //CSV出力用
-   public List<Reservation> findByRestaurantNameLike(String keyword);
-   public List<Reservation> findByRestaurantNameLikeAndReservedDatetimeBetween(String keyword, 
+   public List<Reservation> findByRestaurantNameLikeOrderByReservedDatetimeDesc(String keyword);
+   public List<Reservation> findByRestaurantNameLikeAndReservedDatetimeBetweenOrderByReservedDatetimeDesc(String keyword, 
 																			    LocalDateTime start, 
 																			    LocalDateTime end);
-   public List<Reservation> findAll();
-   public List<Reservation> findByReservedDatetimeBetween(LocalDateTime start, 
+   public List<Reservation> findAllByOrderByReservedDatetimeDesc();
+   public List<Reservation> findByReservedDatetimeBetweenOrderByReservedDatetimeDesc(LocalDateTime start, 
 		   																	LocalDateTime end);
 }
