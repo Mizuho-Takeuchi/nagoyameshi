@@ -204,11 +204,21 @@ public class UserService {
 	//ログイン5回連続(30分以内)失敗時に、usersテーブルに30分後の日時を記録
 	public void lockUser(String email) {
 		User user = userRepository.findByEmail(email);
-
+		
 		if (user != null) {
 			LocalDateTime now = LocalDateTime.now();
 			int faildAttempt = user.getFailedAttempt();
-
+			Timestamp lockedUntilTimestamp = user.getLockedUntil();
+			
+			//lockedUntilが過去の日時であれば、失敗回数を1・lockedUntilをnullに変更
+			if(faildAttempt >= 5 && lockedUntilTimestamp != null) {
+				LocalDateTime lickedUntil = lockedUntilTimestamp.toLocalDateTime();
+				if(now.isAfter(lickedUntil)) {
+					faildAttempt = 0;
+					user.setLockedUntil(null);
+				}
+			}
+			
 			if (faildAttempt != 5) {
 				if (user.getLastFailedAt() != null) {
 					Timestamp lastFailed = user.getLastFailedAt();

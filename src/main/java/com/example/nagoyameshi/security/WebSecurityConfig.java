@@ -64,9 +64,6 @@ public class WebSecurityConfig {
                     String errorParam = "";
                     String email = request.getParameter("username");
                     
-                    //デバック用
-                    boolean a = userService.isAccountLocked(email);
-                    
                     if (userService.isAccountLocked(email) == true) {
                         // アカウントロック中の場合
                         log.info("Login failed: User {} is locked.", email);
