@@ -126,6 +126,29 @@
 								<form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form>
 							</div>
 						</li>
+
+						<!-- 店舗管理者であれば表示する -->
+						<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_RESTAURANT_MANAGER')">
+							<a id="navbarDropdownAdmin" class="nav-link dropdown-toggle" href="#" role="button"
+								data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+								店舗管理者メニュー
+							</a>
+
+							<div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">
+								<a class="dropdown-item" th:href="@{/manager}">ホーム</a>
+								<a class="dropdown-item" th:href="@{/manager/restaurants}">店舗情報</a>
+								<a class="dropdown-item" th:href="@{/manager/reservations}">予約一覧</a>
+
+								<div class="dropdown-divider"></div>
+
+								<a class="dropdown-item" th:href="@{/logout}"
+									onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+									ログアウト
+								</a>
+								<form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form>
+							</div>
+						</li>
+
 					</ul>
 				</div>
 			</div>
@@ -144,6 +167,17 @@
 				<a class="list-group-item list-group-item-action" th:href="@{/admin/reservations}">予約一覧</a>
 				<a class="list-group-item list-group-item-action" th:href="@{/admin/company}">会社概要</a>
 				<a class="list-group-item list-group-item-action" th:href="@{/admin/terms}">利用規約</a>
+			</div>
+		</div>
+	</div>
+	
+	<!-- サイドバー（店舗管理者）の部品化 -->
+	<div th:fragment="sidebar-manager" th:remove="tag">
+		<div class="col-2 admin-sidebar">
+			<div class="list-group">
+				<a class="list-group-item list-group-item-action" th:href="@{/manager}">ホーム</a>
+				<a class="list-group-item list-group-item-action" th:href="@{/manager/restaurants}">店舗情報</a>
+				<a class="list-group-item list-group-item-action" th:href="@{/manager/reservations}">予約一覧</a>
 			</div>
 		</div>
 	</div>
