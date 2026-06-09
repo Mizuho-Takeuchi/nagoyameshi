@@ -37,6 +37,8 @@ public class HomeController {
 			
 			if("ROLE_ADMIN".equals(userRoleName)) {
 				return "redirect:/admin";
+			}else if("ROLE_RESTAURANT_MANAGER".equals(userRoleName)) {
+				return "redirect:/manager";
 			}
 		}
 		Page<Restaurant> highlyRatedRestaurants = restaurantService.findAllRestaurantsByOrderByAverageScoreDesc(PageRequest.of(0, 6));

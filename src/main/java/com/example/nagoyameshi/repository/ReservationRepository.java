@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.nagoyameshi.entity.Reservation;
+import com.example.nagoyameshi.entity.Restaurant;
 import com.example.nagoyameshi.entity.User;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
@@ -31,4 +32,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
    public List<Reservation> findAllByOrderByReservedDatetimeDesc();
    public List<Reservation> findByReservedDatetimeBetweenOrderByReservedDatetimeDesc(LocalDateTime start, 
 		   																	LocalDateTime end);
+   
+   //店舗管理者画面表示用
+   public long countByRestaurant(Restaurant restaurant);
+   public Page<Reservation> findByRestaurantOrderByReservedDatetimeDesc(Restaurant restaurant, Pageable pageable);
 }

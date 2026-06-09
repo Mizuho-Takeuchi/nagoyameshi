@@ -113,4 +113,13 @@ public class ReservationService {
 																	    	LocalDateTime end){
 		return reservationRepository.findByReservedDatetimeBetweenOrderByReservedDatetimeDesc(start, end);
 	}
+	
+	//店舗管理者ページ用
+	public long countReservationByRestaurant (Restaurant restaurant) {
+		return reservationRepository.countByRestaurant(restaurant);
+	}
+	
+	public Page<Reservation> findReservationsByRestaurant(Restaurant restaurant, Pageable pageable){
+		return reservationRepository.findByRestaurantOrderByReservedDatetimeDesc(restaurant, pageable);
+	}
 }

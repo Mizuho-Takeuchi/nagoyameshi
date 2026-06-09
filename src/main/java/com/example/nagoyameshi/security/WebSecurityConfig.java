@@ -33,7 +33,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/restaurants/{restaurantId}/reviews/**", "/reservations/**", "/restaurants/{restaurantId}/reservations/**", "/favorites/**", "/restaurants/{restaurantId}/favorites/**").hasAnyRole("FREE_MEMBER", "PAID_MEMBER")
                 .requestMatchers("/subscription/register","/subscription/create").hasRole("FREE_MEMBER")
                 .requestMatchers("/subscription/edit","/subscription/update","/subscription/cancel","/subscription/delete").hasRole("PAID_MEMBER")
-                .requestMatchers("/admin/**").hasRole("ADMIN")              
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/manager/**").hasRole("RESTAURANT_MANAGER")
                 .anyRequest().authenticated()                   // 上記以外のURLはログインが必要（会員または管理者のどちらでもOK）
             )
             .formLogin((form) -> form

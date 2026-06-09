@@ -56,6 +56,10 @@ public class User {
 
    @Column(name = "enabled")
    private Boolean enabled;
+   
+   @ManyToOne
+   @JoinColumn(name = "restaurant_id")
+   private Restaurant restaurant;
 
    @Column(name = "stripe_customer_id")
    private String stripeCustomerId;

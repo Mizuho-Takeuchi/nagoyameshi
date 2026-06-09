@@ -16,13 +16,15 @@ CREATE TABLE IF NOT EXISTS users (
    password VARCHAR(255) NOT NULL,
    role_id INT NOT NULL,
    enabled BOOLEAN NOT NULL,
-   stripe_customer_id VARCHAR(255) UNIQUE,
-   locked_until DATETIME,
+   restaurant_id INT,
+   stripe_customer_id VARCHAR(255) UNIQUE DEFAULT NULL,
+   locked_until DATETIME DEFAULT NULL,
    failed_attempt INT DEFAULT 0,
-   last_failed_at DATETIME,
+   last_failed_at DATETIME DEFAULT NULL,
    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   FOREIGN KEY (role_id) REFERENCES roles (id)
+   FOREIGN KEY (role_id) REFERENCES roles (id),
+   FOREIGN KEY (restaurant_id) REFERENCES restaurants (id)
 );
 
 CREATE TABLE IF NOT EXISTS verification_tokens (
