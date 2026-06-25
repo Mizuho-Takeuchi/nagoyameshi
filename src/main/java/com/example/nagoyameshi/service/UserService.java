@@ -20,8 +20,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.nagoyameshi.entity.Restaurant;
 import com.example.nagoyameshi.entity.Role;
 import com.example.nagoyameshi.entity.User;
+import com.example.nagoyameshi.form.CreateManagerForm;
 import com.example.nagoyameshi.form.SignupForm;
 import com.example.nagoyameshi.form.UserEditForm;
 import com.example.nagoyameshi.repository.RestaurantRepository;
@@ -34,15 +36,18 @@ public class UserService {
 	private final RoleRepository roleRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final RestaurantRepository restaurantRepository;
+	private final RestaurantService restaurantService;
 
 	public UserService(UserRepository userRepository,
 			RoleRepository roleRepository,
 			PasswordEncoder passwordEncoder,
-			RestaurantRepository restaurantRepository) {
+			RestaurantRepository restaurantRepository,
+			RestaurantService restaurantService) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.restaurantRepository = restaurantRepository;
+		this.restaurantService = restaurantService;
 	}
 
 	@Transactional
@@ -261,7 +266,7 @@ public class UserService {
 	public boolean isAccountLocked(String email) {
 		User user = userRepository.findByEmail(email);
 		if (user != null) {
-			if (user.getFailedAttempt() == 5) {
+			if (user.getFailedAttempt() != null && user.getFailedAttempt() == 5) {
 				LocalDateTime now = LocalDateTime.now();
 				LocalDateTime lockedUntil = user.getLockedUntil().toLocalDateTime();
 				if (lockedUntil == null) {
@@ -271,5 +276,48 @@ public class UserService {
 			}
 		}
 		return false;
+	}
+	
+	//RestaurantManagerユーザーを作成
+	@Transactional
+	public User createManager(CreateManagerForm createManagerForm) {
+		User user = new User();
+		Role role = roleRepository.findByName("ROLE_RESTAURANT_MANAGER");
+		
+		Restaurant selectedRestaurant = null;
+		Optional<Restaurant> optionalSelectedRestaurant = restaurantService.findRestaurantById(createManagerForm.getSelectedRestaurant());
+		if(optionalSelectedRestaurant.isPresent()) {
+			selectedRestaurant = optionalSelectedRestaurant.get();
+		}
+
+		user.setName(createManagerForm.getName());
+		user.setFurigana(createManagerForm.getFurigana());
+		user.setPostalCode(createManagerForm.getPostalCode());
+		user.setAddress(createManagerForm.getAddress());
+		user.setPhoneNumber(createManagerForm.getPhoneNumber());
+		user.setRestaurant(selectedRestaurant);
+
+		//誕生日（任意項目）
+		if (createManagerForm.getBirthday().isEmpty()) {
+			user.setBirthday(null);
+		} else {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+			LocalDate birthday = LocalDate.parse(createManagerForm.getBirthday(), formatter);
+			user.setBirthday(birthday);
+		}
+
+		//職業（任意項目）
+		if (createManagerForm.getOccupation().isEmpty()) {
+			user.setOccupation(null);
+		} else {
+			user.setOccupation(createManagerForm.getOccupation());
+		}
+
+		user.setEmail(createManagerForm.getEmail());
+		user.setPassword(passwordEncoder.encode(createManagerForm.getPassword()));
+		user.setRole(role);
+		user.setEnabled(false);
+
+		return userRepository.save(user);
 	}
 }
