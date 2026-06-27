@@ -122,4 +122,12 @@ public class ReservationService {
 	public Page<Reservation> findReservationsByRestaurant(Restaurant restaurant, Pageable pageable){
 		return reservationRepository.findByRestaurantOrderByReservedDatetimeDesc(restaurant, pageable);
 	}
+	
+	public long countReservationsByRestaurantAndReservedDatetimeBetween (Restaurant restaurant, LocalDateTime start, LocalDateTime end) {
+		return reservationRepository.countByRestaurantAndReservedDatetimeBetween(restaurant, start, end);
+	}
+	
+	public Page<Reservation> findReservationsByRestaurantAndReservedDatetimeBetween(Restaurant restaurant, LocalDateTime start, LocalDateTime end, Pageable pageable){
+		return reservationRepository.findByRestaurantAndReservedDatetimeBetween(restaurant, start, end, pageable);
+	}
 }
