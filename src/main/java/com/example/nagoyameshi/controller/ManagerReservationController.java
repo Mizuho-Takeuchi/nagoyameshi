@@ -1,5 +1,8 @@
 package com.example.nagoyameshi.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.nagoyameshi.entity.Reservation;
 import com.example.nagoyameshi.entity.Restaurant;
@@ -19,23 +23,43 @@ import com.example.nagoyameshi.service.ReservationService;
 @RequestMapping("/manager/reservations")
 public class ManagerReservationController {
 	private final ReservationService reservationService;
-	
+
 	public ManagerReservationController(ReservationService reservationService) {
 		this.reservationService = reservationService;
 	}
-	
+
 	@GetMapping
 	public String index(@PageableDefault(page = 0, size = 15, sort = "id", direction = Direction.ASC)Pageable pageable,
 						Model model,
-						@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+						@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+						@RequestParam(name = "date", required = false) String date) {
 		Restaurant restaurant = null;
 		if(userDetailsImpl != null) {
 			restaurant = userDetailsImpl.getUser().getRestaurant();
 		}
 		
-		Page<Reservation> reservationPage = reservationService.findReservationsByRestaurant(restaurant, pageable);
+		Page<Reservation> reservationPage = null;
+		LocalDate today = LocalDate.now();
+		if(date == null || date.isEmpty()) {
+			reservationPage = reservationService.findReservationsByRestaurant(restaurant, pageable);
+		}else {
+			if(date.equals("today")) {
+				LocalDateTime startOfToday = today.atStartOfDay();
+				LocalDateTime endOfToday = today.atTime(23, 59, 59);
+				reservationPage = reservationService.findReservationsByRestaurantAndReservedDatetimeBetween(restaurant, startOfToday, endOfToday, pageable);
+			}else if(date.equals("tomorrow")) {
+				LocalDate tomorrow = today.plusDays(1);
+				LocalDateTime startOfTomorrow = tomorrow.atStartOfDay();
+				LocalDateTime endOfTomorrow = tomorrow.atTime(23, 59, 59);
+				reservationPage = reservationService.findReservationsByRestaurantAndReservedDatetimeBetween(restaurant, startOfTomorrow, endOfTomorrow, pageable);
+			}else {
+				reservationPage = reservationService.findReservationsByRestaurant(restaurant, pageable);
+			}
+		}
+		
 		model.addAttribute("reservationPage", reservationPage);
 		
 		return "manager/reservations/index";
 	}
+
 }

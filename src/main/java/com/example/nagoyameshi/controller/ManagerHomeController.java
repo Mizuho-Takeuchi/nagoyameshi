@@ -1,5 +1,8 @@
 package com.example.nagoyameshi.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,10 +31,19 @@ public class ManagerHomeController {
 		if(userDetailsImpl != null) {
 			restaurant = userDetailsImpl.getUser().getRestaurant();
 		}
-		long totalReservations = reservationService.countReservationByRestaurant(restaurant);
+		
+		LocalDate today = LocalDate.now();
+		LocalDateTime startOfToday = today.atStartOfDay();
+		LocalDateTime endOfToday = today.atTime(23, 59, 59);
+		LocalDate tomorrow = today.plusDays(1);
+		LocalDateTime startOfTomorrow = tomorrow.atStartOfDay();
+		LocalDateTime endOfTomorrow = tomorrow.atTime(23, 59, 59);
+		long todaysReservations = reservationService.countReservationsByRestaurantAndReservedDatetimeBetween(restaurant, startOfToday, endOfToday);
+		long tomorrowsReservations = reservationService.countReservationsByRestaurantAndReservedDatetimeBetween(restaurant, startOfTomorrow, endOfTomorrow);
 				
 		model.addAttribute("restaurant", restaurant);
-		model.addAttribute("totalReservations", totalReservations);
+		model.addAttribute("todaysReservations", todaysReservations);
+		model.addAttribute("tomorrowsReservations", tomorrowsReservations);
 		
 		//ログ
 		log.info("A restaurant manager accessed the toppage.");
