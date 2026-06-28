@@ -246,4 +246,9 @@ public class RestaurantService {
     public List<Integer> findDayIndexesByRestaurantId(Integer id){
     	return restaurantRepository.findDayIndexesByRestaurantId(id);
     }
+    
+    //すべてのレストランをリストで取得
+    public List<Restaurant> findAllRestaurants(){
+    	return restaurantRepository.findAll();
+    }
 }
