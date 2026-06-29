@@ -136,7 +136,7 @@ public class ReservationController {
 		}
 		
 		reservationService.createReservation(reservationRegisterForm, user, restaurant);
-		redirectAttributes.addFlashAttribute("successMessage", "予約が完了しました。");
+		redirectAttributes.addFlashAttribute("successMessage", "仮予約が完了しました。");
 		//ログ
 		log.info("Complete the process: register reservation.");
 		return "redirect:/reservations";

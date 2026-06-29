@@ -41,19 +41,19 @@ public class ManagerReservationController {
 		Page<Reservation> reservationPage = null;
 		LocalDate today = LocalDate.now();
 		if(date == null || date.isEmpty()) {
-			reservationPage = reservationService.findReservationsByRestaurant(restaurant, pageable);
+			reservationPage = reservationService.findReservationsByRestaurantAndStatus(restaurant, 1, pageable);
 		}else {
 			if(date.equals("today")) {
 				LocalDateTime startOfToday = today.atStartOfDay();
 				LocalDateTime endOfToday = today.atTime(23, 59, 59);
-				reservationPage = reservationService.findReservationsByRestaurantAndReservedDatetimeBetween(restaurant, startOfToday, endOfToday, pageable);
+				reservationPage = reservationService.findReservationsByRestaurantAndReservedDatetimeBetweenAndStatus(restaurant, startOfToday, endOfToday, 1, pageable);
 			}else if(date.equals("tomorrow")) {
 				LocalDate tomorrow = today.plusDays(1);
 				LocalDateTime startOfTomorrow = tomorrow.atStartOfDay();
 				LocalDateTime endOfTomorrow = tomorrow.atTime(23, 59, 59);
-				reservationPage = reservationService.findReservationsByRestaurantAndReservedDatetimeBetween(restaurant, startOfTomorrow, endOfTomorrow, pageable);
+				reservationPage = reservationService.findReservationsByRestaurantAndReservedDatetimeBetweenAndStatus(restaurant, startOfTomorrow, endOfTomorrow, 1, pageable);
 			}else {
-				reservationPage = reservationService.findReservationsByRestaurant(restaurant, pageable);
+				reservationPage = reservationService.findReservationsByRestaurantAndStatus(restaurant, 1, pageable);
 			}
 		}
 		

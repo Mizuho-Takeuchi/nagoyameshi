@@ -38,12 +38,14 @@ public class ManagerHomeController {
 		LocalDate tomorrow = today.plusDays(1);
 		LocalDateTime startOfTomorrow = tomorrow.atStartOfDay();
 		LocalDateTime endOfTomorrow = tomorrow.atTime(23, 59, 59);
-		long todaysReservations = reservationService.countReservationsByRestaurantAndReservedDatetimeBetween(restaurant, startOfToday, endOfToday);
-		long tomorrowsReservations = reservationService.countReservationsByRestaurantAndReservedDatetimeBetween(restaurant, startOfTomorrow, endOfTomorrow);
+		long todaysReservations = reservationService.countReservationsByRestaurantAndReservedDatetimeBetweenAndStatus(restaurant, startOfToday, endOfToday, 1);
+		long tomorrowsReservations = reservationService.countReservationsByRestaurantAndReservedDatetimeBetweenAndStatus(restaurant, startOfTomorrow, endOfTomorrow, 1);
+		long approvalReservations = reservationService.countReservationByRestaurantAndStatus(restaurant, 0);
 				
 		model.addAttribute("restaurant", restaurant);
 		model.addAttribute("todaysReservations", todaysReservations);
 		model.addAttribute("tomorrowsReservations", tomorrowsReservations);
+		model.addAttribute("approvalReservations", approvalReservations);
 		
 		//ログ
 		log.info("A restaurant manager accessed the toppage.");

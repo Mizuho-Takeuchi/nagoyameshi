@@ -34,8 +34,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 		   																	LocalDateTime end);
    
    //店舗管理者画面表示用
-   public long countByRestaurant(Restaurant restaurant);
-   public Page<Reservation> findByRestaurantOrderByReservedDatetimeDesc(Restaurant restaurant, Pageable pageable);
-   public long countByRestaurantAndReservedDatetimeBetween(Restaurant restaurant, LocalDateTime start, LocalDateTime end);
-   public Page<Reservation> findByRestaurantAndReservedDatetimeBetween(Restaurant restaurant, LocalDateTime start, LocalDateTime end, Pageable pageable);
+   public long countByRestaurantAndStatus(Restaurant restaurant, Integer status);
+   public Page<Reservation> findByRestaurantAndStatusOrderByReservedDatetimeDesc(Restaurant restaurant, Integer status, Pageable pageable);
+   public long countByRestaurantAndReservedDatetimeBetweenAndStatus(Restaurant restaurant, LocalDateTime start, LocalDateTime end, Integer status);
+   public Page<Reservation> findByRestaurantAndReservedDatetimeBetweenAndStatusOrderByReservedDatetimeDesc(Restaurant restaurant, LocalDateTime start, LocalDateTime end, Integer status, Pageable pageable);
 }

@@ -54,6 +54,7 @@ public class ReservationService {
 		reservation.setNumberOfPeople(reservationRegisterForm.getNumberOfPeople());
 		reservation.setRestaurant(restaurant);
 		reservation.setUser(user);
+		reservation.setStatus(0);
 		
 		reservationRepository.save(reservation);
 	}
@@ -115,19 +116,29 @@ public class ReservationService {
 	}
 	
 	//店舗管理者ページ用
-	public long countReservationByRestaurant (Restaurant restaurant) {
-		return reservationRepository.countByRestaurant(restaurant);
+	public long countReservationByRestaurantAndStatus(Restaurant restaurant, Integer status) {
+		return reservationRepository.countByRestaurantAndStatus(restaurant, status);
 	}
 	
-	public Page<Reservation> findReservationsByRestaurant(Restaurant restaurant, Pageable pageable){
-		return reservationRepository.findByRestaurantOrderByReservedDatetimeDesc(restaurant, pageable);
+	public Page<Reservation> findReservationsByRestaurantAndStatus(Restaurant restaurant, Integer status, Pageable pageable){
+		return reservationRepository.findByRestaurantAndStatusOrderByReservedDatetimeDesc(restaurant, status, pageable);
 	}
 	
-	public long countReservationsByRestaurantAndReservedDatetimeBetween (Restaurant restaurant, LocalDateTime start, LocalDateTime end) {
-		return reservationRepository.countByRestaurantAndReservedDatetimeBetween(restaurant, start, end);
+	public long countReservationsByRestaurantAndReservedDatetimeBetweenAndStatus(Restaurant restaurant, LocalDateTime start, LocalDateTime end, Integer status) {
+		return reservationRepository.countByRestaurantAndReservedDatetimeBetweenAndStatus(restaurant, start, end, status);
 	}
 	
-	public Page<Reservation> findReservationsByRestaurantAndReservedDatetimeBetween(Restaurant restaurant, LocalDateTime start, LocalDateTime end, Pageable pageable){
-		return reservationRepository.findByRestaurantAndReservedDatetimeBetween(restaurant, start, end, pageable);
+	public Page<Reservation> findReservationsByRestaurantAndReservedDatetimeBetweenAndStatus(Restaurant restaurant, LocalDateTime start, LocalDateTime end, Integer status, Pageable pageable){
+		return reservationRepository.findByRestaurantAndReservedDatetimeBetweenAndStatusOrderByReservedDatetimeDesc(restaurant, start, end, status, pageable);
+	}
+	
+	public void approve(Integer id) {
+		Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+		Reservation reservation = null;
+		if(optionalReservation.isPresent()) {
+			reservation = optionalReservation.get();
+		}
+		reservation.setStatus(1);
+		reservationRepository.save(reservation);
 	}
 }

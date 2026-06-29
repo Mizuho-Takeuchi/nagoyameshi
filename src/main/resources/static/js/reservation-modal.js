@@ -6,10 +6,10 @@ const cancelMessage = document.getElementById('cancelReservationModalLabel');
 
 // 予約のキャンセル用モーダルを開くときの処理
 document.getElementById('cancelReservationModal').addEventListener('show.bs.modal', (event) => {
-    let cancelButton = event.relatedTarget;
-    let reservationId = cancelButton.dataset.reservationId;
-    let restaurantName = cancelButton.dataset.restaurantName;
+	let cancelButton = event.relatedTarget;
+	let reservationId = cancelButton.dataset.reservationId;
+	let restaurantName = cancelButton.dataset.restaurantName;
 
-    cancelReservationForm.action = `/reservations/${reservationId}/delete`;
-    cancelMessage.textContent = `「${restaurantName}」の予約をキャンセルしてもよろしいですか？`
+	cancelReservationForm.action = `/reservations/${reservationId}/delete`;
+	cancelMessage.textContent = `「${restaurantName}」の予約をキャンセルしてもよろしいですか？`
 });
