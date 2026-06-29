@@ -37,6 +37,9 @@ public class Reservation {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
+	@Column(name = "status")
+	private Integer status;
+	
 	@Column(name = "created_at", insertable = false, updatable = false)
 	private Timestamp createdAt;
 	

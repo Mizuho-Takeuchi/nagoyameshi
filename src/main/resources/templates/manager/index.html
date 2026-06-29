@@ -28,7 +28,8 @@
 											<div class="card-body text-center">
 												<h5 class="card-title">本日の予約数</h5>
 												<p class="card-text">
-												    <a th:href="@{/manager/reservations(date=${'today'})}" th:text="${todaysReservations + '件'}"></a>
+													<a th:href="@{/manager/reservations(date=${'today'})}"
+														th:text="${todaysReservations + '件'}"></a>
 												</p>
 											</div>
 										</div>
@@ -39,7 +40,20 @@
 											<div class="card-body text-center">
 												<h5 class="card-title">明日の予約数</h5>
 												<p class="card-text">
-												    <a th:href="@{/manager/reservations(date=${'tomorrow'})}" th:text="${tomorrowsReservations + '件'}"></a>
+													<a th:href="@{/manager/reservations(date=${'tomorrow'})}"
+														th:text="${tomorrowsReservations + '件'}"></a>
+												</p>
+											</div>
+										</div>
+									</div>
+
+									<div class="col">
+										<div class="card bg-light">
+											<div class="card-body text-center">
+												<h5 class="card-title">仮予約数</h5>
+												<p class="card-text">
+													<a th:href="@{/manager/approval}"
+														th:text="${approvalReservations + '件'}"></a>
 												</p>
 											</div>
 										</div>
